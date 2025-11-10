@@ -37,6 +37,7 @@ jobs:
           generate_release_notes: true
 
       - name: Publish Release
+        if: ${{ !env.PRERELEASE }}
         run: gnome-extensions upload -u "$GNOME_USER" -p "$GNOME_PASSWORD" --accept-tos dist/${{ env.UUID }}.zip
         env:
           GNOME_USER: ${{ secrets.GNOME_USER }}
