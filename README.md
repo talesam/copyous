@@ -1,7 +1,7 @@
 # <img src="resources/images/icon.svg" height="32px" alt="Icon"/> Copyous - Clipboard Manager
 [![GitHub License](https://img.shields.io/github/license/boerdereinar/copyous)](./LICENSE)
 [![GitHub Release](https://img.shields.io/github/v/release/boerdereinar/copyous)](https://github.com/boerdereinar/copyous/releases/latest)
-[![Extension Downloads](https://img.shields.io/gnome-extensions/dt/copyous%40boerdereinar.dev?logo=gnome&logoColor=white&cacheSeconds=86400)](https://extensions.gnome.org)
+[![Extension Downloads](https://img.shields.io/gnome-extensions/dt/copyous%40boerdereinar.dev?logo=gnome&logoColor=white&cacheSeconds=86400)](https://extensions.gnome.org/extension/8834/copyous/)
 
 ![Screenshot](resources/images/screenshot.png)
 
@@ -30,7 +30,7 @@ For the extension to work optimally you need to install the following dependenci
 </details>
 
 ### From Gnome Extensions (Recommended)
-[<img width="200" src="https://github.com/andyholmes/gnome-shell-extensions-badge/raw/master/get-it-on-ego.png">](https://extensions.gnome.org)
+[<img width="200" src="https://github.com/andyholmes/gnome-shell-extensions-badge/raw/master/get-it-on-ego.png">](https://extensions.gnome.org/extension/8834/copyous/)
 
 ### From Latest GitHub Release
 1. Download the latest release from [Releases](https://github.com/boerdereinar/copyous/releases).
