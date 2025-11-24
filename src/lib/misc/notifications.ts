@@ -12,7 +12,7 @@ import * as MessageTray from 'resource:///org/gnome/shell/ui/messageTray.js';
 import type CopyousExtension from '../../extension.js';
 import { ItemType } from '../common/constants.js';
 import { registerClass } from '../common/gjs.js';
-import { Icon } from '../common/icons.js';
+import { Icon, loadIcon } from '../common/icons.js';
 import { normalizeIndentation, trim } from '../ui/components/label.js';
 import { commonDirectory } from '../ui/items/filesItem.js';
 import { ClipboardEntry } from './db.js';
@@ -30,7 +30,7 @@ export class NotificationManager extends GObject.Object {
 
 		this._source = new MessageTray.Source({
 			title: this.ext.metadata.name,
-			icon: Icon.Clipboard.load(this.ext),
+			icon: loadIcon(this.ext, Icon.Clipboard),
 		});
 
 		this._source.connect('destroy', () => (this._source = null));
@@ -44,7 +44,7 @@ export class NotificationManager extends GObject.Object {
 			source,
 			title,
 			body,
-			gicon: Icon.Warning.load(this.ext),
+			gicon: loadIcon(this.ext, Icon.Warning),
 		});
 
 		for (const [label, callback] of actions) {
@@ -62,7 +62,7 @@ export class NotificationManager extends GObject.Object {
 			source,
 			title: _('Copied Text'),
 			body: text,
-			gicon: Icon.Text.load(this.ext),
+			gicon: loadIcon(this.ext, Icon.Text),
 			isTransient: true,
 		});
 		source.addNotification(notification);
@@ -112,11 +112,11 @@ export class NotificationManager extends GObject.Object {
 		switch (entry.type) {
 			case ItemType.Text:
 				title = _('Copied Text');
-				gicon = Icon.Text.load(this.ext);
+				gicon = loadIcon(this.ext, Icon.Text);
 				break;
 			case ItemType.Code:
 				title = _('Copied Code');
-				gicon = Icon.Code.load(this.ext);
+				gicon = loadIcon(this.ext, Icon.Code);
 				break;
 			case ItemType.Image: {
 				const file = body.substring('file://'.length);
@@ -141,20 +141,20 @@ export class NotificationManager extends GObject.Object {
 
 				title = ngettext('Copied %d File', 'Copied %d Files', files.length).format(files.length);
 				body = common.get_path() ?? '';
-				gicon = (files.length === 1 ? Icon.File : Icon.Folder).load(this.ext);
+				gicon = loadIcon(this.ext, files.length === 1 ? Icon.File : Icon.Folder);
 				break;
 			}
 			case ItemType.Link:
 				title = _('Copied Link');
-				gicon = Icon.Link.load(this.ext);
+				gicon = loadIcon(this.ext, Icon.Link);
 				break;
 			case ItemType.Character:
 				title = _('Copied Character');
-				gicon = Icon.Character.load(this.ext);
+				gicon = loadIcon(this.ext, Icon.Character);
 				break;
 			case ItemType.Color:
 				title = _('Copied Color');
-				gicon = Icon.Color.load(this.ext);
+				gicon = loadIcon(this.ext, Icon.Color);
 				break;
 		}
 

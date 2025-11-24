@@ -99,7 +99,7 @@ export class LinkItemCustomization extends Adw.ExpanderRow {
 			subtitle: _('Configure link exclusions for link previews'),
 			activatable: true,
 		});
-		configureLinkExclusions.add_suffix(new Gtk.Image({ icon_name: Icon.Next.name }));
+		configureLinkExclusions.add_suffix(new Gtk.Image({ icon_name: Icon.Next }));
 		this.add_row(configureLinkExclusions);
 
 		configureLinkExclusions.connect('activated', () => window.push_subpage(linkExclusionsPage));

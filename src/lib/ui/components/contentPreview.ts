@@ -9,7 +9,7 @@ import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 import type CopyousExtension from '../../../extension.js';
 import { ActiveState } from '../../common/constants.js';
 import { enumParamSpec, flagsParamSpec, registerClass } from '../../common/gjs.js';
-import { Icon } from '../../common/icons.js';
+import { Icon, loadIcon } from '../../common/icons.js';
 import { CodeLabel, CodeLabelConstructorProps } from './codeLabel.js';
 
 export const FileType = {
@@ -89,7 +89,7 @@ export class ImagePreview extends ContentPreview {
 			this.add_child(
 				new St.Icon({
 					style_class: 'missing-image',
-					gicon: Icon.MissingImage.load(ext),
+					gicon: loadIcon(ext, Icon.MissingImage),
 					x_align: Clutter.ActorAlign.CENTER,
 					y_align: Clutter.ActorAlign.CENTER,
 					x_expand: true,

@@ -26,7 +26,7 @@ class SoundVolumeRow extends Adw.PreferencesRow {
 
 		box.append(
 			new Gtk.Image({
-				icon_name: Icon.Volume.name,
+				icon_name: Icon.Volume,
 				margin_start: 6,
 				margin_end: 6,
 			}),
@@ -57,7 +57,7 @@ class SoundVolumeRow extends Adw.PreferencesRow {
 		box.append(separator);
 
 		const resetButton = new Gtk.Button({
-			icon_name: Icon.Undo.name,
+			icon_name: Icon.Undo,
 			valign: Gtk.Align.CENTER,
 			css_classes: ['flat'],
 			sensitive: false,
@@ -253,7 +253,7 @@ export class FeedbackSettings extends Adw.PreferencesGroup {
 			css_classes: ['dim-label'],
 		});
 		playSound.add_suffix(this._soundLabel);
-		playSound.add_suffix(new Gtk.Image({ icon_name: Icon.Next.name }));
+		playSound.add_suffix(new Gtk.Image({ icon_name: Icon.Next }));
 
 		playSound.connect('activated', () => this._soundChooserPage && window.push_subpage(this._soundChooserPage));
 

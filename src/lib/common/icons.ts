@@ -2,70 +2,56 @@ import Gio from 'gi://Gio';
 
 import type { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 
-export class Icon {
-	// Enum members
-	public static Clipboard = new Icon('clipboard-symbolic');
-	public static ClipboardDisabled = new Icon('clipboard-disabled-symbolic');
-	public static SearchClipboard = new Icon('search-clipboard-symbolic');
+export const Icon = {
+	// Icon Files
+	Character: 'character-symbolic',
+	CheckOutline: 'check-round-outline-symbolic',
+	Clipboard: 'clipboard-symbolic',
+	ClipboardDisabled: 'clipboard-disabled-symbolic',
+	Code: 'folder-code-legacy-symbolic',
+	Color: 'color-symbolic',
+	Duration: 'duration-symbolic',
+	File: 'file-symbolic',
+	Folder: 'folder-symbolic',
+	Image: 'image-symbolic',
+	Keyboard: 'keyboard-symbolic',
+	Link: 'link-symbolic',
+	Pin: 'pin-symbolic',
+	SearchClipboard: 'search-clipboard-symbolic',
+	Settings: 'settings-symbolic',
+	Tag: 'tag-symbolic',
+	Text: 'text-symbolic',
 
-	public static Action = new Icon('media-playback-start-symbolic', true);
-	public static Keyboard = new Icon('keyboard-symbolic');
-	public static Settings = new Icon('settings-symbolic');
+	// System Icons
+	Action: 'media-playback-start-symbolic',
+	Add: 'list-add-symbolic',
+	Check: 'object-select-symbolic',
+	Delete: 'user-trash-symbolic',
+	Down: 'pan-down-symbolic',
+	DragHandle: 'list-drag-handle-symbolic',
+	Edit: 'document-edit-symbolic',
+	Help: 'help-about-symbolic',
+	Hide: 'view-conceal-symbolic',
+	Left: 'pan-start-symbolic',
+	MissingImage: 'image-missing-symbolic',
+	Next: 'go-next-symbolic',
+	Right: 'pan-end-symbolic',
+	Search: 'system-search-symbolic',
+	Show: 'view-reveal-symbolic',
+	Undo: 'edit-undo-symbolic',
+	ViewList: 'view-list-symbolic',
+	ViewMore: 'view-more-symbolic',
+	Volume: 'audio-volume-high-symbolic',
+	Warning: 'dialog-warning-symbolic',
+};
 
-	public static Add = new Icon('list-add-symbolic', true);
-	public static Undo = new Icon('edit-undo-symbolic', true);
-	public static DragHandle = new Icon('list-drag-handle-symbolic', true);
-	public static Edit = new Icon('document-edit-symbolic', true);
-	public static Next = new Icon('go-next-symbolic', true);
-	public static Show = new Icon('view-reveal-symbolic', true);
-	public static Hide = new Icon('view-conceal-symbolic', true);
-	public static ViewList = new Icon('view-list-symbolic', true);
-	public static Help = new Icon('help-about-symbolic', true);
-	public static Check = new Icon('object-select-symbolic', true);
-	public static CheckOutline = new Icon('check-round-outline-symbolic');
-	public static Volume = new Icon('audio-volume-high-symbolic', true);
+export type Icon = (typeof Icon)[keyof typeof Icon];
 
-	public static Search = new Icon('system-search-symbolic', true);
-	public static Down = new Icon('pan-down-symbolic', true);
-	public static Left = new Icon('pan-start-symbolic', true);
-	public static Right = new Icon('pan-end-symbolic', true);
-
-	public static ViewMore = new Icon('view-more-symbolic', true);
-	public static Delete = new Icon('user-trash-symbolic', true);
-	public static Pin = new Icon('pin-symbolic');
-	public static Tag = new Icon('tag-symbolic');
-
-	public static MissingImage = new Icon('image-missing-symbolic', true);
-	public static Warning = new Icon('dialog-warning-symbolic', true);
-	public static Duration = new Icon('duration-symbolic');
-
-	public static Text = new Icon('text-symbolic');
-	public static Code = new Icon('folder-code-legacy-symbolic');
-	public static Image = new Icon('image-symbolic');
-	public static File = new Icon('file-symbolic');
-	public static Folder = new Icon('folder-symbolic');
-	public static Link = new Icon('link-symbolic');
-	public static Character = new Icon('character-symbolic');
-	public static Color = new Icon('color-symbolic');
-
-	// Implementation
-	private readonly _name: string;
-	private readonly _system: boolean;
-
-	private constructor(name: string, system: boolean = false) {
-		this._name = name;
-		this._system = system;
-	}
-
-	public get name() {
-		return this._name;
-	}
-
-	public load(ext: Extension): Gio.Icon {
-		if (this._system) {
-			return Gio.icon_new_for_string(this.name);
-		} else {
-			return Gio.Icon.new_for_string(`${ext.path}/icons/hicolor/scalable/actions/${this.name}.svg`);
-		}
+export function loadIcon(ext: Extension, icon: Icon): Gio.Icon {
+	const file = Gio.file_new_for_path(`${ext.path}/icons/hicolor/scalable/actions/${icon}.svg`);
+	if (file.query_exists(null)) {
+		return Gio.Icon.new_for_string(file.get_path()!);
+	} else {
+		return Gio.Icon.new_for_string(icon);
 	}
 }

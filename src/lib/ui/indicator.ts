@@ -14,7 +14,7 @@ import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import type CopyousExtension from '../../extension.js';
 import { ClipboardHistory } from '../common/constants.js';
 import { registerClass } from '../common/gjs.js';
-import { Icon } from '../common/icons.js';
+import { Icon, loadIcon } from '../common/icons.js';
 
 @registerClass({
 	Signals: {
@@ -78,7 +78,7 @@ export class ClipboardIndicator extends PanelMenu.Button {
 		super(0.5, ext.metadata.name, false);
 
 		this._icon = new St.Icon({
-			gicon: Icon.Clipboard.load(ext),
+			gicon: loadIcon(ext, Icon.Clipboard),
 			style_class: 'clipboard-indicator-icon',
 		});
 		this.add_child(this._icon);
@@ -112,7 +112,7 @@ export class ClipboardIndicator extends PanelMenu.Button {
 		if (this._incognito === value) return;
 		this._incognitoSwitch.state = value;
 		this._incognito = value;
-		this._icon.gicon = (value ? Icon.ClipboardDisabled : Icon.Clipboard).load(this.ext);
+		this._icon.gicon = loadIcon(this.ext, value ? Icon.ClipboardDisabled : Icon.Clipboard);
 		this.ext.settings.set_boolean('incognito', value);
 		this.notify('incognito');
 	}

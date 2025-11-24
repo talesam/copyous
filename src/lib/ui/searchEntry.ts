@@ -11,7 +11,7 @@ import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import type CopyousExtension from '../../extension.js';
 import { ItemType, ItemTypes, Tag, Tags } from '../common/constants.js';
 import { enumParamSpec, registerClass } from '../common/gjs.js';
-import { Icon } from '../common/icons.js';
+import { Icon, loadIcon } from '../common/icons.js';
 import { ClipboardEntry } from '../misc/db.js';
 import { TagsItem } from './components/tagsItem.js';
 
@@ -276,15 +276,15 @@ export class SearchEntry extends St.Entry {
 		});
 
 		this._icons = {
-			search: Icon.Search.load(ext),
-			[ItemType.Text]: Icon.Text.load(ext),
-			[ItemType.Code]: Icon.Code.load(ext),
-			[ItemType.Image]: Icon.Image.load(ext),
-			[ItemType.File]: Icon.File.load(ext),
-			[ItemType.Files]: Icon.Folder.load(ext),
-			[ItemType.Link]: Icon.Link.load(ext),
-			[ItemType.Character]: Icon.Character.load(ext),
-			[ItemType.Color]: Icon.Color.load(ext),
+			search: loadIcon(ext, Icon.Search),
+			[ItemType.Text]: loadIcon(ext, Icon.Text),
+			[ItemType.Code]: loadIcon(ext, Icon.Code),
+			[ItemType.Image]: loadIcon(ext, Icon.Image),
+			[ItemType.File]: loadIcon(ext, Icon.File),
+			[ItemType.Files]: loadIcon(ext, Icon.Folder),
+			[ItemType.Link]: loadIcon(ext, Icon.Link),
+			[ItemType.Character]: loadIcon(ext, Icon.Character),
+			[ItemType.Color]: loadIcon(ext, Icon.Color),
 		};
 
 		// Item button
@@ -317,7 +317,7 @@ export class SearchEntry extends St.Entry {
 		itemButtonContent.add_child(
 			new St.Icon({
 				style_class: 'arrow-icon',
-				icon_name: Icon.Down.name,
+				icon_name: Icon.Down,
 			}),
 		);
 
@@ -354,7 +354,7 @@ export class SearchEntry extends St.Entry {
 				style_class: 'pin-button-content',
 				child: new St.Icon({
 					style_class: 'search-entry-icon',
-					gicon: Icon.Pin.load(ext),
+					gicon: loadIcon(ext, Icon.Pin),
 				}),
 			}),
 		});

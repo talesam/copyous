@@ -60,7 +60,7 @@ export class ActionsPage extends Adw.PreferencesPage {
 		super({
 			name: 'actions',
 			title: _('Actions'),
-			icon_name: Icon.Action.name,
+			icon_name: Icon.Action,
 		});
 
 		this._config = loadConfig(prefs, true);
@@ -76,7 +76,7 @@ export class ActionsPage extends Adw.PreferencesPage {
 			activatable: true,
 		});
 		defaultsGroup.add(defaultsButton);
-		defaultsButton.add_suffix(new Gtk.Image({ icon_name: Icon.Next.name }));
+		defaultsButton.add_suffix(new Gtk.Image({ icon_name: Icon.Next }));
 
 		const resetGroup = new Adw.PreferencesGroup();
 		this.add(resetGroup);

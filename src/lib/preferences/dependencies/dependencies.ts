@@ -325,7 +325,7 @@ export class DependenciesWarningButton extends Gtk.MenuButton {
 
 	constructor(prefs: ExtensionPreferences, window: Adw.PreferencesWindow) {
 		super({
-			icon_name: Icon.Warning.name,
+			icon_name: Icon.Warning,
 			css_classes: ['flat', 'warning'],
 		});
 

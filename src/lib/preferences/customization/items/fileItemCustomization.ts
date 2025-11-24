@@ -191,7 +191,7 @@ export class FileItemCustomization extends Adw.ExpanderRow {
 			subtitle: _('Configure file exclusions for file previews'),
 			activatable: true,
 		});
-		configureFileExclusions.add_suffix(new Gtk.Image({ icon_name: Icon.Next.name }));
+		configureFileExclusions.add_suffix(new Gtk.Image({ icon_name: Icon.Next }));
 		this.add_row(configureFileExclusions);
 
 		configureFileExclusions.connect('activated', () => window.push_subpage(fileExclusionsPage));

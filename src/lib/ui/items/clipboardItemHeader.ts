@@ -9,7 +9,7 @@ import { formatTimeSpan } from 'resource:///org/gnome/shell/misc/dateUtils.js';
 
 import { ActiveState, Tag } from '../../common/constants.js';
 import { enumParamSpec, flagsParamSpec, registerClass } from '../../common/gjs.js';
-import { Icon } from '../../common/icons.js';
+import { Icon, loadIcon } from '../../common/icons.js';
 
 // https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/js/ui/messageList.js#L277
 @registerClass()
@@ -116,7 +116,7 @@ export class ClipboardItemHeader extends St.BoxLayout {
 
 		this._headerIcon = new St.Icon({
 			style_class: 'clipboard-item-header-icon',
-			gicon: icon.load(ext),
+			gicon: loadIcon(ext, icon),
 			y_align: Clutter.ActorAlign.CENTER,
 		});
 		this.add_child(this._headerIcon);
@@ -150,7 +150,7 @@ export class ClipboardItemHeader extends St.BoxLayout {
 		this._menuButton = new St.Button({
 			style_class: 'clipboard-item-header-button menu-button',
 			y_align: Clutter.ActorAlign.CENTER,
-			child: new St.Icon({ gicon: Icon.ViewMore.load(ext) }),
+			child: new St.Icon({ gicon: loadIcon(ext, Icon.ViewMore) }),
 		});
 		this._menuButton.connect('clicked', () => {
 			const box = this._menuButton.get_transformed_extents();
@@ -161,7 +161,7 @@ export class ClipboardItemHeader extends St.BoxLayout {
 		this._deleteButton = new St.Button({
 			style_class: 'clipboard-item-header-button',
 			y_align: Clutter.ActorAlign.CENTER,
-			child: new St.Icon({ gicon: Icon.Delete.load(ext) }),
+			child: new St.Icon({ gicon: loadIcon(ext, Icon.Delete) }),
 		});
 		this._deleteButton.connect('clicked', () => this.emit('delete'));
 		this.buttons.add_child(this._deleteButton);
@@ -170,7 +170,7 @@ export class ClipboardItemHeader extends St.BoxLayout {
 			style_class: 'clipboard-item-header-button',
 			y_align: Clutter.ActorAlign.CENTER,
 			toggle_mode: true,
-			child: new St.Icon({ gicon: Icon.Pin.load(ext) }),
+			child: new St.Icon({ gicon: loadIcon(ext, Icon.Pin) }),
 		});
 		this.buttons.add_child(this._pinButton);
 
@@ -178,7 +178,7 @@ export class ClipboardItemHeader extends St.BoxLayout {
 			style_class: 'clipboard-item-tag-button',
 			y_align: Clutter.ActorAlign.CENTER,
 			visible: false,
-			child: new St.Icon({ gicon: Icon.Tag.load(ext) }),
+			child: new St.Icon({ gicon: loadIcon(ext, Icon.Tag) }),
 		});
 		this.buttons.add_child(this._tagIcon);
 

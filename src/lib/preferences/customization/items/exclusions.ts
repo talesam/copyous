@@ -111,7 +111,7 @@ class AddExclusionPatternDialog extends Adw.AlertDialog {
 
 		if (glob) {
 			const syntaxButton = new Gtk.MenuButton({
-				icon_name: Icon.Help.name,
+				icon_name: Icon.Help,
 				valign: Gtk.Align.CENTER,
 				popover: new GlobSyntaxPopover(),
 				css_classes: ['flat'],
@@ -131,7 +131,7 @@ class AddExclusionPatternDialog extends Adw.AlertDialog {
 
 		if (glob) {
 			const fileSelectButton = new Gtk.Button({
-				icon_name: Icon.Folder.name,
+				icon_name: Icon.Folder,
 				valign: Gtk.Align.CENTER,
 				css_classes: ['flat'],
 			});
@@ -154,17 +154,17 @@ class AddExclusionPatternDialog extends Adw.AlertDialog {
 		testGroup.add(testLegend);
 
 		this._invalidPattern = new Gtk.Box({ spacing: 6, css_classes: ['error'], visible: false });
-		this._invalidPattern.append(new Gtk.Image({ icon_name: Icon.Warning.name }));
+		this._invalidPattern.append(new Gtk.Image({ icon_name: Icon.Warning }));
 		this._invalidPattern.append(new Gtk.Label({ label: _('Invalid Pattern') }));
 		testLegend.append(this._invalidPattern);
 
 		this._shown = new Gtk.Box({ spacing: 6, visible: false });
-		this._shown.append(new Gtk.Image({ icon_name: Icon.Show.name }));
+		this._shown.append(new Gtk.Image({ icon_name: Icon.Show }));
 		this._shown.append(new Gtk.Label({ label: _('Preview Shown') }));
 		testLegend.append(this._shown);
 
 		this._hidden = new Gtk.Box({ spacing: 6, visible: false });
-		this._hidden.append(new Gtk.Image({ icon_name: Icon.Hide.name }));
+		this._hidden.append(new Gtk.Image({ icon_name: Icon.Hide }));
 		this._hidden.append(new Gtk.Label({ label: _('Preview Hidden') }));
 		testLegend.append(this._hidden);
 
@@ -245,7 +245,7 @@ export class ExclusionsGroup extends Adw.PreferencesGroup {
 		super({
 			...params,
 			header_suffix: new Gtk.Button({
-				icon_name: Icon.Add.name,
+				icon_name: Icon.Add,
 				valign: Gtk.Align.CENTER,
 				css_classes: ['flat'],
 			}),
@@ -274,7 +274,7 @@ export class ExclusionsGroup extends Adw.PreferencesGroup {
 			const row = new Adw.ActionRow({ title: item.string });
 
 			const deleteButton = new Gtk.Button({
-				icon_name: Icon.Delete.name,
+				icon_name: Icon.Delete,
 				valign: Gtk.Align.CENTER,
 				css_classes: ['flat', 'destructive-action'],
 			});

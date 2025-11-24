@@ -120,7 +120,7 @@ export class TagsItem extends PopupMenu.PopupBaseMenuItem {
 
 		// Left arrow
 		this._leftArrow = new St.Button({
-			icon_name: Icon.Left.name,
+			icon_name: Icon.Left,
 			style_class: 'arrow-button',
 			reactive: false,
 		});
@@ -142,7 +142,7 @@ export class TagsItem extends PopupMenu.PopupBaseMenuItem {
 
 		// Right arrow
 		this._rightArrow = new St.Button({
-			icon_name: Icon.Right.name,
+			icon_name: Icon.Right,
 			style_class: 'arrow-button',
 		});
 		this.actor.add_child(this._rightArrow);

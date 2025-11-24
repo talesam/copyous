@@ -67,7 +67,7 @@ export default class Preferences extends ExtensionPreferences {
 		const general = new Adw.PreferencesPage({
 			name: 'general',
 			title: _('General'),
-			icon_name: Icon.Settings.name,
+			icon_name: Icon.Settings,
 		});
 		window.add(general);
 
@@ -89,7 +89,7 @@ export default class Preferences extends ExtensionPreferences {
 		const customization = new Adw.PreferencesPage({
 			name: 'customization',
 			title: _('Customization'),
-			icon_name: Icon.Image.name,
+			icon_name: Icon.Image,
 		});
 		window.add(customization);
 
@@ -105,7 +105,7 @@ export default class Preferences extends ExtensionPreferences {
 		const shortcuts = new Adw.PreferencesPage({
 			name: 'shortcuts',
 			title: _('Shortcuts'),
-			icon_name: Icon.Keyboard.name,
+			icon_name: Icon.Keyboard,
 		});
 		window.add(shortcuts);
 

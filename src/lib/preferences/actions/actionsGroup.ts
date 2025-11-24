@@ -52,13 +52,13 @@ class ActionSubmenuRowBase extends Adw.ExpanderRow {
 		});
 
 		const dragHandle = new Gtk.Image({
-			icon_name: Icon.DragHandle.name,
+			icon_name: Icon.DragHandle,
 			valign: Gtk.Align.CENTER,
 		});
 		this.add_prefix(dragHandle);
 
 		this._menuButton = new Gtk.MenuButton({
-			icon_name: Icon.ViewMore.name,
+			icon_name: Icon.ViewMore,
 			valign: Gtk.Align.CENTER,
 			css_classes: ['flat'],
 		});
@@ -98,7 +98,7 @@ class ActionSubmenuRow extends ActionSubmenuRowBase {
 
 		this._addActionButton = new Adw.ButtonRow({
 			title: _('Add Action'),
-			start_icon_name: Icon.Add.name,
+			start_icon_name: Icon.Add,
 		});
 		this._addActionButton.connect('activated', this.add.bind(this));
 		this._addActionButtonList.listbox.append(this._addActionButton);
@@ -321,7 +321,7 @@ class ActionRowBase extends Adw.PreferencesRow {
 		header.append(prefixes);
 
 		const dragHandle = new Gtk.Image({
-			icon_name: Icon.DragHandle.name,
+			icon_name: Icon.DragHandle,
 			valign: Gtk.Align.CENTER,
 		});
 		prefixes.append(dragHandle);
@@ -386,7 +386,7 @@ class ActionRowBase extends Adw.PreferencesRow {
 		header.append(suffixes);
 
 		this._menuButton = new Gtk.MenuButton({
-			icon_name: Icon.ViewMore.name,
+			icon_name: Icon.ViewMore,
 			valign: Gtk.Align.CENTER,
 			css_classes: ['flat'],
 		});
@@ -546,7 +546,7 @@ export class ActionsGroup extends Adw.PreferencesGroup {
 			valign: Gtk.Align.CENTER,
 			css_classes: ['flat'],
 			child: new Adw.ButtonContent({
-				icon_name: Icon.Add.name,
+				icon_name: Icon.Add,
 				label: _('Add'),
 			}),
 		});

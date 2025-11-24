@@ -163,14 +163,14 @@ class LanguageWidget extends Gtk.ListBox {
 
 		this._check = new Gtk.Image({
 			css_classes: [language.isDefault ? 'blue' : 'success'],
-			icon_name: language.isDefault ? Icon.CheckOutline.name : Icon.Check.name,
+			icon_name: language.isDefault ? Icon.CheckOutline : Icon.Check,
 			visible: false,
 		});
 		row.add_suffix(this._check);
 
 		this._delete = new Gtk.Image({
 			css_classes: ['error'],
-			icon_name: Icon.Delete.name,
+			icon_name: Icon.Delete,
 			visible: false,
 		});
 		row.add_suffix(this._delete);
@@ -313,7 +313,7 @@ class HighlightJsPage extends Adw.NavigationPage {
 		searchEntry.bind_property('text', this._filter, 'search', GObject.BindingFlags.DEFAULT);
 		suffix.append(searchEntry);
 
-		const installed = new Gtk.ToggleButton({ icon_name: Icon.CheckOutline.name });
+		const installed = new Gtk.ToggleButton({ icon_name: Icon.CheckOutline });
 		installed.bind_property('active', this._filter, 'installed', GObject.BindingFlags.DEFAULT);
 		suffix.append(installed);
 	}
@@ -374,7 +374,7 @@ export class DependenciesSettings extends Adw.PreferencesGroup {
 			activatable: true,
 		});
 		this.bind_property('hljs', manageHighlightJs, 'sensitive', GObject.BindingFlags.DEFAULT);
-		manageHighlightJs.add_suffix(new Gtk.Image({ icon_name: Icon.Next.name }));
+		manageHighlightJs.add_suffix(new Gtk.Image({ icon_name: Icon.Next }));
 		this.add(manageHighlightJs);
 
 		manageHighlightJs.connect('activated', () => window.push_subpage(this._highlightJsPage));

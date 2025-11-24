@@ -14,7 +14,7 @@ import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import type CopyousExtension from '../../../extension.js';
 import { ItemType } from '../../common/constants.js';
 import { registerClass } from '../../common/gjs.js';
-import { Icon } from '../../common/icons.js';
+import { Icon, loadIcon } from '../../common/icons.js';
 import { ClipboardEntry, CodeMetadata, Language } from '../../misc/db.js';
 
 /** Entry with proper height for multiline text and event forwarding */
@@ -236,7 +236,7 @@ export class LanguageButton extends St.Button {
 
 		box.add_child(
 			new St.Icon({
-				gicon: Icon.Down.load(ext),
+				gicon: loadIcon(ext, Icon.Down),
 				icon_size: 20,
 				x_align: Clutter.ActorAlign.END,
 			}),

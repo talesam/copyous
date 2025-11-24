@@ -68,7 +68,7 @@ export function makeResettable<T extends Row>(row: T, settings: Gio.Settings, ..
 	}
 
 	const resetButton = new Gtk.Button({
-		icon_name: Icon.Undo.name,
+		icon_name: Icon.Undo,
 		valign: Gtk.Align.CENTER,
 		css_classes: ['flat'],
 		sensitive: !isDefault(),

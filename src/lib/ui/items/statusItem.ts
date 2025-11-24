@@ -7,7 +7,7 @@ import { gettext as _ } from 'resource:///org/gnome/shell/extensions/extension.j
 
 import type CopyousExtension from '../../../extension.js';
 import { enumParamSpec, registerClass } from '../../common/gjs.js';
-import { Icon } from '../../common/icons.js';
+import { Icon, loadIcon } from '../../common/icons.js';
 
 export const State = {
 	Empty: 0,
@@ -54,8 +54,8 @@ export class StatusItem extends St.BoxLayout {
 		});
 		this.add_child(box);
 
-		this._emptyIcon = Icon.Clipboard.load(ext);
-		this._noResultsIcon = Icon.SearchClipboard.load(ext);
+		this._emptyIcon = loadIcon(ext, Icon.Clipboard);
+		this._noResultsIcon = loadIcon(ext, Icon.SearchClipboard);
 
 		this._icon = new St.Icon({
 			style_class: 'status-item-icon',

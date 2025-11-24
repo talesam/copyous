@@ -9,7 +9,7 @@ import St from 'gi://St';
 import { Extension, gettext as _, ngettext } from 'resource:///org/gnome/shell/extensions/extension.js';
 
 import { enumParamSpec, registerClass } from '../../common/gjs.js';
-import { Icon } from '../../common/icons.js';
+import { Icon, loadIcon } from '../../common/icons.js';
 import { FileType } from './contentPreview.js';
 
 export const TextCountMode = {
@@ -179,7 +179,7 @@ export class MissingFileInfo extends FileInfo {
 
 		this.add_style_class_name('missing-info');
 
-		this.left.add_child(new St.Icon({ gicon: Icon.Warning.load(ext) }));
+		this.left.add_child(new St.Icon({ gicon: loadIcon(ext, Icon.Warning) }));
 		this.left.add_child(new St.Label({ text: _('Missing File') }));
 	}
 }
@@ -191,7 +191,7 @@ export class ErrorFileInfo extends FileInfo {
 
 		this.add_style_class_name('error-info');
 
-		this.left.add_child(new St.Icon({ gicon: Icon.Warning.load(ext) }));
+		this.left.add_child(new St.Icon({ gicon: loadIcon(ext, Icon.Warning) }));
 		this.left.add_child(new St.Label({ text: _('Error') }));
 	}
 }
@@ -204,12 +204,12 @@ export class DirectoryInfo extends FileInfo {
 		this.add_style_class_name('directory-info');
 
 		const directories = new St.BoxLayout({ style_class: 'directory-count' });
-		directories.add_child(new St.Icon({ gicon: Icon.Folder.load(ext) }));
+		directories.add_child(new St.Icon({ gicon: loadIcon(ext, Icon.Folder) }));
 		directories.add_child(new St.Label({ style_class: 'content-info-number', text: directoryCount.toString() }));
 		this.left.add_child(directories);
 
 		const files = new St.BoxLayout({ style_class: 'file-count' });
-		files.add_child(new St.Icon({ gicon: Icon.File.load(ext) }));
+		files.add_child(new St.Icon({ gicon: loadIcon(ext, Icon.File) }));
 		files.add_child(new St.Label({ style_class: 'content-info-number', text: fileCount.toString() }));
 		this.left.add_child(files);
 	}
@@ -236,7 +236,7 @@ export class MediaInfo extends FileInfo {
 		this.add_style_class_name('media-info');
 
 		const duration = new St.BoxLayout({ style_class: 'media-duration', y_align: Clutter.ActorAlign.END });
-		duration.add_child(new St.Icon({ gicon: Icon.Duration.load(ext) }));
+		duration.add_child(new St.Icon({ gicon: loadIcon(ext, Icon.Duration) }));
 		duration.add_child(new St.Label({ text: formatTime(seconds) }));
 		this.right.add_child(duration);
 	}

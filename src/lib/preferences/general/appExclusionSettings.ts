@@ -76,7 +76,7 @@ class AppSelectionPopover extends Gtk.Popover {
 
 		const placeholder = new Adw.StatusPage({
 			title: _('No Apps Found'),
-			icon_name: Icon.Search.name,
+			icon_name: Icon.Search,
 			css_classes: ['compact', 'dim-label'],
 			height_request: 300,
 		});
@@ -194,7 +194,7 @@ class WMClassExclusionDialog extends Adw.AlertDialog {
 		});
 
 		const appsButton = new Gtk.MenuButton({
-			icon_name: Icon.ViewList.name,
+			icon_name: Icon.ViewList,
 			valign: Gtk.Align.CENTER,
 			css_classes: ['flat'],
 			popover,
@@ -230,7 +230,7 @@ class AppExclusionsGroup extends Adw.PreferencesGroup {
 		super({ title });
 
 		const addExclusion = new Gtk.Button({
-			icon_name: Icon.Add.name,
+			icon_name: Icon.Add,
 			valign: Gtk.Align.CENTER,
 			css_classes: ['flat'],
 		});
@@ -243,7 +243,7 @@ class AppExclusionsGroup extends Adw.PreferencesGroup {
 			const row = new Adw.ActionRow({ title: item.string });
 
 			const deleteButton = new Gtk.Button({
-				icon_name: Icon.Delete.name,
+				icon_name: Icon.Delete,
 				valign: Gtk.Align.CENTER,
 				css_classes: ['flat', 'destructive-action'],
 			});
@@ -322,7 +322,7 @@ export class AppExclusionSettings extends Adw.PreferencesGroup {
 			subtitle: _('Manage apps that will be excluded from clipboard history'),
 			activatable: true,
 		});
-		manageExclusions.add_suffix(new Gtk.Image({ icon_name: Icon.Next.name }));
+		manageExclusions.add_suffix(new Gtk.Image({ icon_name: Icon.Next }));
 		this.add(manageExclusions);
 
 		manageExclusions.connect('activated', () => window.push_subpage(appExclusionsPage));

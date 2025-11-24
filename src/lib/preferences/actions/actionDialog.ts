@@ -65,21 +65,21 @@ export class TypesBox extends Gtk.Box {
 		this._typesBox.visible = true;
 		this._typesBox.remove_all();
 		if (types.includes(ItemType.Text))
-			this._typesBox.append(new Gtk.Image({ icon_name: Icon.Text.name, css_classes: ['dim-label'] }));
+			this._typesBox.append(new Gtk.Image({ icon_name: Icon.Text, css_classes: ['dim-label'] }));
 		if (types.includes(ItemType.Code))
-			this._typesBox.append(new Gtk.Image({ icon_name: Icon.Code.name, css_classes: ['dim-label'] }));
+			this._typesBox.append(new Gtk.Image({ icon_name: Icon.Code, css_classes: ['dim-label'] }));
 		if (types.includes(ItemType.Image))
-			this._typesBox.append(new Gtk.Image({ icon_name: Icon.Image.name, css_classes: ['dim-label'] }));
+			this._typesBox.append(new Gtk.Image({ icon_name: Icon.Image, css_classes: ['dim-label'] }));
 		if (types.includes(ItemType.File))
-			this._typesBox.append(new Gtk.Image({ icon_name: Icon.File.name, css_classes: ['dim-label'] }));
+			this._typesBox.append(new Gtk.Image({ icon_name: Icon.File, css_classes: ['dim-label'] }));
 		if (types.includes(ItemType.Files))
-			this._typesBox.append(new Gtk.Image({ icon_name: Icon.Folder.name, css_classes: ['dim-label'] }));
+			this._typesBox.append(new Gtk.Image({ icon_name: Icon.Folder, css_classes: ['dim-label'] }));
 		if (types.includes(ItemType.Link))
-			this._typesBox.append(new Gtk.Image({ icon_name: Icon.Link.name, css_classes: ['dim-label'] }));
+			this._typesBox.append(new Gtk.Image({ icon_name: Icon.Link, css_classes: ['dim-label'] }));
 		if (types.includes(ItemType.Character))
-			this._typesBox.append(new Gtk.Image({ icon_name: Icon.Character.name, css_classes: ['dim-label'] }));
+			this._typesBox.append(new Gtk.Image({ icon_name: Icon.Character, css_classes: ['dim-label'] }));
 		if (types.includes(ItemType.Color))
-			this._typesBox.append(new Gtk.Image({ icon_name: Icon.Color.name, css_classes: ['dim-label'] }));
+			this._typesBox.append(new Gtk.Image({ icon_name: Icon.Color, css_classes: ['dim-label'] }));
 	}
 }
 
@@ -98,7 +98,7 @@ class TypeRow extends Gtk.ListBoxRow {
 
 		box.append(new Gtk.Label({ label: text, valign: Gtk.Align.CENTER }));
 
-		this._check = new Gtk.Image({ icon_name: Icon.Check.name, visible: false });
+		this._check = new Gtk.Image({ icon_name: Icon.Check, visible: false });
 		box.append(this._check);
 	}
 
@@ -142,7 +142,7 @@ class SelectTypesRow extends Adw.ActionRow {
 		});
 		this.add_suffix(arrowBox);
 
-		const arrow = new Gtk.Image({ icon_name: Icon.Down.name, css_classes: ['dropdown-arrow'] });
+		const arrow = new Gtk.Image({ icon_name: Icon.Down, css_classes: ['dropdown-arrow'] });
 		arrowBox.append(arrow);
 
 		// Popover
@@ -323,7 +323,7 @@ class InfoRow extends Adw.EntryRow {
 
 		this.add_suffix(
 			new Gtk.MenuButton({
-				icon_name: Icon.Help.name,
+				icon_name: Icon.Help,
 				can_focus: false,
 				valign: Gtk.Align.CENTER,
 				popover,
