@@ -186,7 +186,12 @@ export DEBUG_COPYOUS_GDA_VERSION=$(GDA_VERSION)
 export DEBUG_COPYOUS_ACTIONS=$(ACTIONS)
 
 launch: install database
+# Check for mutter-devkit
 	$(if $(HAS_DEVKIT), $(if $(MUTTER_DEVKIT),,$(error mutter-devkit is not installed)))
+# Load dconf settings
+	@dconf reset -f /org/gnome/shell/extensions/$(NAME)/debug/
+	@$(if $(filter-out default,$(DEBUG_SCHEMA)), cat $(DEBUG_SCHEMA) | dconf load /org/gnome/shell/extensions/$(NAME)/debug/)
+# Run shell
 	dbus-run-session -- gnome-shell $(if $(HAS_DEVKIT),--devkit,--nested) --wayland
 
 # Open settings and show logs and dconf watch output while settings are open

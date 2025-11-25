@@ -149,7 +149,7 @@ export default class Preferences extends ExtensionPreferences {
 	override getSettings(schema?: string): Gio.Settings {
 		const environment = GLib.get_environ();
 		const settings = GLib.environ_getenv(environment, 'DEBUG_COPYOUS_SCHEMA');
-		if (Number(settings)) schema ??= this.metadata['settings-schema'] + '.debug';
+		if (settings) schema ??= this.metadata['settings-schema'] + '.debug';
 
 		return super.getSettings(schema);
 	}

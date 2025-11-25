@@ -32,6 +32,7 @@ export class ClipboardScrollView extends St.ScrollView {
 			hscrollbar_policy: St.PolicyType.AUTOMATIC,
 			vscrollbar_policy: St.PolicyType.NEVER,
 			overlay_scrollbars: true,
+			min_height: 0,
 			effect: new St.ScrollViewFade({
 				fade_margins: new Clutter.Margin({
 					top: 12,
