@@ -15,21 +15,26 @@ Gio._promisify(Gio.File.prototype, 'replace_async');
 Gio._promisify(Gio.File.prototype, 'replace_contents_async');
 Gio._promisify(Gio.OutputStream.prototype, 'splice_async');
 
-export async function tryGetMetadata(ext: CopyousExtension, url: string): Promise<LinkMetadata> {
+export async function tryGetMetadata(
+	ext: CopyousExtension,
+	url: string,
+	cancellable: Gio.Cancellable,
+): Promise<LinkMetadata> {
 	const empty: LinkMetadata = { title: null, description: null, image: null };
 
+	let session: Soup.Session | null = null;
 	try {
 		// Check if URL is valid
 		const uri = GLib.uri_parse(url, GLib.UriFlags.NONE);
 
 		// Create request
-		const session = new Soup.Session({ user_agent: UserAgent, idle_timeout: 5 });
+		session = new Soup.Session({ user_agent: UserAgent, idle_timeout: 5 });
 		const message = Soup.Message.new_from_uri('GET', uri);
 		// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept
 		message.request_headers.append('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8');
 
 		// Send request
-		const response = await session.send_async(message, GLib.PRIORITY_DEFAULT, null);
+		const response = await session.send_async(message, GLib.PRIORITY_DEFAULT, cancellable);
 		if (response == null) return empty;
 
 		// Check if the response is an image
@@ -40,7 +45,7 @@ export async function tryGetMetadata(ext: CopyousExtension, url: string): Promis
 			if (imagePath == null) return empty;
 
 			// Write to cache
-			if (!imagePath.query_exists(null)) {
+			if (!imagePath.query_exists(cancellable)) {
 				const out = await imagePath.replace_async(
 					null,
 					false,
@@ -67,7 +72,7 @@ export async function tryGetMetadata(ext: CopyousExtension, url: string): Promis
 			response,
 			OutputStreamSpliceFlags.CLOSE_SOURCE | Gio.OutputStreamSpliceFlags.CLOSE_TARGET,
 			GLib.PRIORITY_DEFAULT,
-			null,
+			cancellable,
 		);
 
 		const bytes = out.steal_as_bytes();
@@ -119,6 +124,8 @@ export async function tryGetMetadata(ext: CopyousExtension, url: string): Promis
 		return { title: title, description: description, image: image };
 	} catch (err) {
 		ext.logger.error('Failed to get metadata', err);
+	} finally {
+		session?.abort();
 	}
 
 	return empty;
@@ -160,7 +167,12 @@ export function getLinkImagePath(ext: Extension, url: string): Gio.File | null {
 	return cacheDir.get_child(checksum);
 }
 
-export async function tryGetLinkImage(ext: CopyousExtension, url: string): Promise<Gio.File | null> {
+export async function tryGetLinkImage(
+	ext: CopyousExtension,
+	url: string,
+	cancellable: Gio.Cancellable,
+): Promise<Gio.File | null> {
+	let session: Soup.Session | null = null;
 	try {
 		// Check if URL is valid
 		const uri = GLib.uri_parse(url, GLib.UriFlags.NONE);
@@ -168,10 +180,10 @@ export async function tryGetLinkImage(ext: CopyousExtension, url: string): Promi
 		// Check if image is already cached
 		const imagePath = getLinkImagePath(ext, url);
 		if (imagePath == null) return null;
-		if (imagePath.query_exists(null)) return imagePath;
+		if (imagePath.query_exists(cancellable)) return imagePath;
 
 		// Otherwise download image
-		const session = new Soup.Session({ user_agent: UserAgent, idle_timeout: 5 });
+		session = new Soup.Session({ user_agent: UserAgent, idle_timeout: 5 });
 		const message = Soup.Message.new_from_uri('GET', uri);
 		// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept
 		message.request_headers.append(
@@ -180,7 +192,7 @@ export async function tryGetLinkImage(ext: CopyousExtension, url: string): Promi
 		);
 
 		// Send request
-		const response = await session.send_and_read_async(message, GLib.PRIORITY_DEFAULT, null);
+		const response = await session.send_and_read_async(message, GLib.PRIORITY_DEFAULT, cancellable);
 		if (response == null) return null;
 
 		const data = response.get_data();
@@ -191,10 +203,12 @@ export async function tryGetLinkImage(ext: CopyousExtension, url: string): Promi
 		if (contentType == null || !contentType.startsWith('image/')) return null;
 
 		// Write to cache
-		await imagePath.replace_contents_async(data, null, false, Gio.FileCreateFlags.REPLACE_DESTINATION, null);
+		await imagePath.replace_contents_async(data, null, false, Gio.FileCreateFlags.REPLACE_DESTINATION, cancellable);
 		return imagePath;
 	} catch {
 		ext.logger.error('Failed to get link image');
+	} finally {
+		session?.abort();
 	}
 
 	return null;

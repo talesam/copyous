@@ -51,6 +51,8 @@ export class LinkPreview extends St.Widget {
 	private readonly _url: St.Label;
 	private readonly _singleUrl: St.Label;
 
+	private _cancellable: Gio.Cancellable | null = null;
+
 	constructor(
 		private ext: CopyousExtension,
 		url: string,
@@ -146,7 +148,8 @@ export class LinkPreview extends St.Widget {
 		} else if (this._image === undefined && this._metadata?.image && this._showImage) {
 			this._image = null;
 
-			tryGetLinkImage(this.ext, this._metadata.image)
+			this._cancellable = new Gio.Cancellable();
+			tryGetLinkImage(this.ext, this._metadata.image, this._cancellable)
 				.then((image) => {
 					if (image) {
 						this._image = new ImagePreview(this.ext, image);
@@ -156,7 +159,8 @@ export class LinkPreview extends St.Widget {
 						this._image = null;
 					}
 				})
-				.catch(() => {});
+				.catch(() => {})
+				.finally(() => (this._cancellable = null));
 		}
 
 		const show = this._metadata?.title != null || this._metadata?.description != null;
@@ -271,6 +275,11 @@ export class LinkPreview extends St.Widget {
 			this._singleUrl.allocate(Clutter.ActorBox.new(x, y, width, height));
 		}
 	}
+
+	override destroy() {
+		this._cancellable?.cancel();
+		super.destroy();
+	}
 }
 
 @registerClass()
@@ -279,6 +288,8 @@ export class LinkItem extends ClipboardItem {
 
 	private readonly _linkPreview: LinkPreview;
 	private readonly _url: St.Label;
+
+	private _cancellable: Gio.Cancellable | null = null;
 
 	constructor(ext: CopyousExtension, entry: ClipboardEntry) {
 		super(ext, entry, Icon.Link, _('Link'));
@@ -341,7 +352,9 @@ export class LinkItem extends ClipboardItem {
 			const metadata: LinkMetadata = { title: null, description: null, image: null, ...this.entry.metadata };
 			this._linkPreview.metadata ??= metadata;
 		} else if (show) {
-			const metadata = await tryGetMetadata(this.ext, url);
+			this._cancellable = new Gio.Cancellable();
+			const metadata = await tryGetMetadata(this.ext, url, this._cancellable);
+			this._cancellable = null;
 			this.entry.metadata = metadata;
 			this._linkPreview.metadata = metadata;
 		}
@@ -349,6 +362,7 @@ export class LinkItem extends ClipboardItem {
 
 	override destroy() {
 		this.linkItemSettings.disconnectObject(this);
+		this._cancellable?.cancel();
 
 		super.destroy();
 	}

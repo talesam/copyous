@@ -220,6 +220,7 @@ async function downloadHljsModule(
 	url: string,
 	hash: string,
 	path: Gio.File,
+	cancellable: Gio.Cancellable,
 ): Promise<boolean> {
 	try {
 		if (path.query_exists(null)) {
@@ -231,11 +232,11 @@ async function downloadHljsModule(
 		const uri = GLib.uri_parse(url, GLib.UriFlags.NONE);
 
 		// Download page
-		const session = new Soup.Session({ user_agent: UserAgent, idle_timeout: 30 });
+		const session = new Soup.Session({ user_agent: UserAgent, idle_timeout: 5 });
 		const message = Soup.Message.new_from_uri('GET', uri);
 
 		// Send request
-		const response = await session.send_and_read_async(message, GLib.PRIORITY_DEFAULT, null);
+		const response = await session.send_and_read_async(message, GLib.PRIORITY_DEFAULT, cancellable);
 		if (response == null) return false;
 
 		const data = response.get_data();
@@ -254,9 +255,9 @@ async function downloadHljsModule(
 
 		// Write to file
 		const parent = path.get_parent()!;
-		if (!parent.query_exists(null)) parent.make_directory_with_parents(null);
+		if (!parent.query_exists(cancellable)) parent.make_directory_with_parents(cancellable);
 
-		await path.replace_contents_async(data, null, false, Gio.FileCreateFlags.REPLACE_DESTINATION, null);
+		await path.replace_contents_async(data, null, false, Gio.FileCreateFlags.REPLACE_DESTINATION, cancellable);
 		return true;
 	} catch (error) {
 		prefs.getLogger().error(error);
@@ -264,7 +265,7 @@ async function downloadHljsModule(
 	}
 }
 
-async function downloadHljs(prefs: ExtensionPreferences): Promise<boolean> {
+async function downloadHljs(prefs: ExtensionPreferences, cancellable: Gio.Cancellable): Promise<boolean> {
 	const path = getHljsPath(prefs);
 	let prefUrl = null;
 	for (const url of HljsUrls) {
@@ -272,7 +273,7 @@ async function downloadHljs(prefs: ExtensionPreferences): Promise<boolean> {
 		prefUrl = url;
 
 		// eslint-disable-next-line no-await-in-loop
-		if (await downloadHljsModule(prefs, url, HljsSha512, path)) {
+		if (await downloadHljsModule(prefs, url, HljsSha512, path, cancellable)) {
 			return true;
 		}
 	}
@@ -286,6 +287,7 @@ export async function downloadHljsLanguage(
 	language: string,
 	hash: string,
 	path: Gio.File,
+	cancellable: Gio.Cancellable,
 ) {
 	let prefUrl = null;
 	for (const url of getHljsLanguageUrls(language)) {
@@ -296,7 +298,7 @@ export async function downloadHljsLanguage(
 		prefUrl = url;
 
 		// eslint-disable-next-line no-await-in-loop
-		if (await downloadHljsModule(prefs, url, hash, path)) {
+		if (await downloadHljsModule(prefs, url, hash, path, cancellable)) {
 			return true;
 		}
 	}
@@ -322,6 +324,8 @@ export class DependenciesWarningButton extends Gtk.MenuButton {
 
 	private readonly _menu: Gio.Menu;
 	private _items: string[] = ['libgda', 'gsound', 'hljs'];
+
+	private _cancellable: Gio.Cancellable | null = null;
 
 	constructor(prefs: ExtensionPreferences, window: Adw.PreferencesWindow) {
 		super({
@@ -367,7 +371,9 @@ export class DependenciesWarningButton extends Gtk.MenuButton {
 				this.remove_css_class('warning');
 
 				// Start download
-				const success = await downloadHljs(prefs);
+				this._cancellable = new Gio.Cancellable();
+				const success = await downloadHljs(prefs, this._cancellable);
+				this._cancellable = null;
 
 				// Hide spinner
 				this.set_child(null);
@@ -402,6 +408,8 @@ export class DependenciesWarningButton extends Gtk.MenuButton {
 				settings.set_boolean('disable-hljs-dialog', true);
 			}
 		});
+
+		this.connect('destroy', () => this._cancellable?.cancel());
 
 		// Menu
 		const actionGroup = new Gio.SimpleActionGroup();

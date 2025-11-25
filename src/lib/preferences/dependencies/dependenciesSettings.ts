@@ -142,6 +142,8 @@ class LanguageWidget extends Gtk.ListBox {
 	private readonly _delete: Gtk.Image;
 	private readonly _spinner: Adw.Spinner;
 
+	private _cancellable: Map<string, Gio.Cancellable> = new Map();
+
 	constructor(
 		private prefs: ExtensionPreferences,
 		private language: Language,
@@ -179,6 +181,9 @@ class LanguageWidget extends Gtk.ListBox {
 		row.add_suffix(this._spinner);
 
 		this.updateVisibility();
+
+		// Cancel connections
+		this.connect('destroy', () => this._cancellable.forEach((c) => c.cancel()));
 	}
 
 	override vfunc_state_flags_changed(previous_state_flags: Gtk.StateFlags) {
@@ -215,12 +220,17 @@ class LanguageWidget extends Gtk.ListBox {
 
 		if (!this.language.installed) {
 			// Install
+			const cancellable = new Gio.Cancellable();
+			this._cancellable.set(this.language.languageName, cancellable);
 			const success = await downloadHljsLanguage(
 				this.prefs,
 				this.language.languageName,
 				this.language.hash,
 				this.language.file,
+				cancellable,
 			);
+			this._cancellable.delete(this.language.languageName);
+
 			const installed = success ? this.language.checkInstalled() : false;
 			if (installed) this.emit('changed');
 
