@@ -93,6 +93,8 @@
 
 	// Scrollbar
 	StScrollBar {
+		StButton#vhandle,
+		StButton#hhandle,
 		> .vhandle,
 		> .hhandle {
 			background-color: mix($fg_color, $bg_color, 30%);
