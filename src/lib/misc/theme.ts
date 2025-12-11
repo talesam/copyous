@@ -69,6 +69,8 @@ export class ThemeManager extends GObject.Object {
 	}
 
 	destroy() {
+		if (this._stylesheet) this._theme.unload_stylesheet(this._stylesheet);
+		this._stylesheet = null;
 		Gio.resources_unregister(this._resource);
 		this._themeSettings.disconnectObject(this);
 		this._settings.disconnect(this._colorSchemeChangedId);
