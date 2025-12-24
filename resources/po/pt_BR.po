@@ -46,7 +46,8 @@ msgstr "Altura Dinâmica do Item"
 msgid ""
 "Dynamically adjust the height of the clipboard items based on their content. "
 "Only works in vertical orientation"
-msgstr "Ajustar a aultura dinamicamente dos itens da área de transferência baseado no conteúdo"
+msgstr ""
+"Ajustar a altura dinamicamente dos itens da área de transferência baseado no conteúdo. "
 "Funciona apenas na orientação vertical"
 
 #: src/lib/preferences/customization/itemCustomization.ts:53
@@ -537,7 +538,7 @@ msgstr "Mostrar Prévia de Link"
 
 #: src/lib/preferences/customization/items/linkItemCustomization.ts:71
 msgid "Show link preview in the link item"
-msgstr ""
+msgstr "Mostrar prévia de link no item de link"
 
 #: src/lib/preferences/customization/items/linkItemCustomization.ts:76
 msgid "Show Link Preview Image"
@@ -565,7 +566,7 @@ msgstr "Orientação da prévia de link"
 
 #: src/lib/preferences/customization/items/linkItemCustomization.ts:99
 msgid "Configure link exclusions for link previews"
-msgstr ""
+msgstr "Configurar exclusões de link para prévias de link"
 
 #: src/lib/preferences/customization/items/fileItemCustomization.ts:51
 #: src/lib/preferences/customization/items/fileItemCustomization.ts:190
@@ -606,13 +607,11 @@ msgstr "Miniatura"
 
 #: src/lib/preferences/customization/items/fileItemCustomization.ts:89
 msgid "Enable file previews for all files with generated thumbnails"
-msgstr ""
-"Habilitar prévia de arquivo para todos os arquivos com miniaturas geradas"
+msgstr "Habilitar prévias de arquivo para todos os arquivos com miniaturas geradas"
 
 #: src/lib/preferences/customization/items/fileItemCustomization.ts:101
 msgid "Enter a glob pattern to exclude files that should not have a preview."
-msgstr ""
-"Coloque um padrão glob para excluir arquivos que não devem ter uma prévia."
+msgstr "Digite um padrão glob para excluir arquivos que não devem ter prévia."
 
 #: src/lib/preferences/customization/items/fileItemCustomization.ts:102
 msgid "Path"
@@ -643,7 +642,7 @@ msgid ""
 "File preview shows a preview of the contents of a file.\n"
 "File info shows some information about the file."
 msgstr ""
-"Prévias de arquivo mostram uma prévia do conteúdo do arquivo.\n"
+"Prévia de arquivo mostra uma prévia do conteúdo de um arquivo.\n"
 "Informações de arquivo mostram algumas informações sobre o arquivo."
 
 #: src/lib/preferences/customization/items/fileItemCustomization.ts:159
@@ -753,8 +752,8 @@ msgid ""
 "You can manually install highlight.js by downloading highlight.min.js from "
 "\"Url\" to \"Install Location\"."
 msgstr ""
-"Você pode instalar manualmente highlight.js baixando highlight.min.js de "
-"\"Url\" para \"Local de Instalação\"."
+"Você pode instalar manualmente o highlight.js baixando o highlight.min.js da "
+"\"Url\" para o \"Local de Instalação\"."
 
 #: src/lib/preferences/dependencies/dependencies.ts:187
 msgid "Url"
@@ -780,8 +779,8 @@ msgid ""
 "installing libgda you will need to log out or restart your system."
 msgstr ""
 "Libgda é necessário para armazenar o histórico da área de transferência "
-"entre sessões.Instale libgda 5.0 ou 6.0 com suporte a SQLite para usar essa "
-"funcionalidade.Após instalar libgda, você precisará fazer logout ou "
+"entre sessões. Instale o libgda 5.0 ou 6.0 com suporte a SQLite para usar "
+"este recurso. Após instalar o libgda, você precisará fazer logout ou "
 "reiniciar seu sistema."
 
 #: src/lib/preferences/dependencies/dependencies.ts:338
@@ -799,9 +798,9 @@ msgid ""
 "feature. After installing GSound you will need to log out or restart your "
 "system."
 msgstr ""
-"GSound é necessário para reproduzir efeitos sonoros. Instale GSound para "
-"usar essa funcionalidade. Após instalar GSound, você precisará fazer logout "
-"ou reiniciar seu sistema."
+"GSound é necessário para reproduzir efeitos sonoros. Instale o GSound para "
+"usar este recurso. Após instalar o GSound, você precisará fazer logout ou "
+"reiniciar seu sistema."
 
 #: src/lib/preferences/dependencies/dependencies.ts:351
 msgid "Install GSound"
@@ -924,8 +923,8 @@ msgid ""
 "Restoring the built-in actions will restore built-in actions that were "
 "removed. Custom actions will remain unchanged"
 msgstr ""
-"Restaurando as ações padrão restaurará as ações padrão que foram removidas. "
-"As ações personalizadas permanecerão inalteradas"
+"Restaurar as ações integradas irá restaurar as ações integradas que foram "
+"removidas. As ações personalizadas permanecerão inalteradas"
 
 #: src/lib/preferences/actions/actionsPage.ts:140
 msgid "Reset Actions?"
@@ -1001,8 +1000,8 @@ msgid ""
 "The regular expression does not use any flags for matching. Leaving this "
 "empty will match everything."
 msgstr ""
-"A expressão regular não usa nenhum sinalizador para correspondência. Deixar "
-"isso vazio corresponderá a tudo."
+"A expressão regular não usa nenhuma flag para correspondência. Deixar em "
+"branco irá corresponder a tudo."
 
 #: src/lib/preferences/actions/actionDialog.ts:361
 msgid "Type"
@@ -1021,8 +1020,8 @@ msgid ""
 "Clipboard content will be provided via stdin. Capture groups of the regular "
 "expression will be passed as positional parameters $1, $2, $3, ..."
 msgstr ""
-"O conteúdo da Área de Transferência será fornecido via stdin. Os grupos de "
-"captura da expressãoregular serão passados como parâmetros posicionais $1, "
+"O conteúdo da área de transferência será fornecido via stdin. Grupos de "
+"captura da expressão regular serão passados como parâmetros posicionais $1, "
 "$2, $3, ..."
 
 #: src/lib/preferences/actions/actionDialog.ts:459
@@ -1181,8 +1180,8 @@ msgid ""
 "Choose what to do with your clipboard history when you restart, log out, or "
 "shut down your system"
 msgstr ""
-"Escolha o que fazer com o histórico de clipboard quando reiniciar, sair ou "
-"desligar o sistema"
+"Escolha o que fazer com o histórico da área de transferência ao reiniciar, "
+"fazer logout ou desligar o sistema"
 
 #: src/lib/preferences/general/historySettings.ts:64 src/lib/ui/indicator.ts:52
 msgid "Clear"
@@ -1213,8 +1212,8 @@ msgid ""
 "Select how many minutes to keep items in the clipboard history. Set to 0 to "
 "disable the time limit"
 msgstr ""
-"Seleciona quantos minutos manter itens no histórico da área de "
-"transferência. Defina como 0 para desativar o limite de tempo"
+"Selecione quantos minutos manter itens no histórico da área de transferência. "
+"Defina como 0 para desativar o limite de tempo"
 
 #: src/lib/preferences/general/feedbackSettings.ts:129
 #: src/lib/preferences/general/feedbackSettings.ts:251
@@ -1295,13 +1294,11 @@ msgstr "Enviar notificação"
 
 #: src/lib/preferences/general/feedbackSettings.ts:246
 msgid "Send a notification when a clipboard item is copied"
-msgstr ""
-"Enviar uma notificação quando um item da área de transferência é copiado"
+msgstr "Enviar uma notificação quando um item da área de transferência for copiado"
 
 #: src/lib/preferences/general/feedbackSettings.ts:252
 msgid "Sound to play when a clipboard item is copied"
-msgstr ""
-"Som a ser reproduzido quando um item da área de transferência é copiado"
+msgstr "Som a reproduzir quando um item da área de transferência for copiado"
 
 #: src/lib/preferences/general/locationsGroup.ts:13
 msgid "Locations"
@@ -1331,8 +1328,8 @@ msgstr "Lembrar da consulta de pesquisa"
 msgid ""
 "Remember the search query when closing and reopening the clipboard dialog"
 msgstr ""
-"Relembrar a consulta de pesquisa quando fechar e reabrir o diálogo da área "
-"de transferência"
+"Lembrar a consulta de pesquisa ao fechar e reabrir o diálogo da área de "
+"transferência"
 
 #: src/lib/preferences/general/behaviorSettings.ts:22
 msgid "Exclude Pinned Items from Main View"
@@ -1340,9 +1337,7 @@ msgstr "Excluir itens marcados como favoritos da visualização principal"
 
 #: src/lib/preferences/general/behaviorSettings.ts:23
 msgid "Pinned items appear only when searching for pinned items"
-msgstr ""
-"Itens marcados como favoritos aparecem apenas quando pesquisando por itens "
-"marcados como favoritos"
+msgstr "Itens fixados aparecem apenas ao pesquisar por itens fixados"
 
 #: src/lib/preferences/general/behaviorSettings.ts:28
 msgid "Exclude Tagged Items from Main View"
@@ -1350,9 +1345,7 @@ msgstr "Excluir itens marcados como favoritos da visualização principal"
 
 #: src/lib/preferences/general/behaviorSettings.ts:29
 msgid "Tagged items appear only when searching for tagged items"
-msgstr ""
-"Itens marcados como favoritos aparecem apenas quando pesquisando por itens "
-"marcados como favoritos"
+msgstr "Itens marcados aparecem apenas ao pesquisar por itens marcados"
 
 #: src/lib/preferences/general/behaviorSettings.ts:34
 msgid "Protect Pinned Items"
@@ -1378,8 +1371,8 @@ msgstr "Colar ao Copiar"
 msgid ""
 "Automatically paste clipboard items when selected from clipboard history"
 msgstr ""
-"Cola automaticamente itens copiados quando selecionados do histórico de "
-"itens copiados"
+"Colar automaticamente itens da área de transferência ao selecioná-los do "
+"histórico"
 
 #: src/lib/preferences/general/behaviorSettings.ts:52
 msgid "Sync Primary Clipboard"
@@ -1398,8 +1391,8 @@ msgid ""
 "Update the copied date of clipboard items when selected from clipboard "
 "history"
 msgstr ""
-"Atualizar a data de itens copiados quando selecionados do histórico de itens "
-"copiados"
+"Atualizar a data de cópia dos itens da área de transferência ao selecioná-los "
+"do histórico"
 
 #: src/lib/preferences/general/appExclusionSettings.ts:38
 msgid "Search apps"
@@ -1440,9 +1433,7 @@ msgstr "Gerenciar Exclusões de Aplicativos"
 
 #: src/lib/preferences/general/appExclusionSettings.ts:322
 msgid "Manage apps that will be excluded from clipboard history"
-msgstr ""
-"Gerenciar aplicativos que serão excluídos da história da Área de "
-"Transferência"
+msgstr "Gerenciar aplicativos que serão excluídos do histórico da área de transferência"
 
 #: src/lib/preferences/shortcuts/shortcutRow.ts:78
 msgid "Set Shortcut"
