@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Copyous\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-07 17:29+0000\n"
+"POT-Creation-Date: 2025-12-26 00:18+0000\n"
 "PO-Revision-Date: 2025-11-30 20:29+0700\n"
 "Last-Translator: Victor <firephantom303@gmail.com>\n"
 "Language-Team: Russian\n"
@@ -1180,7 +1180,9 @@ msgstr ""
 "Выберите, что делать с историей буфера обмена при перезапуске, выходе из "
 "системы или её завершении"
 
-#: src/lib/preferences/general/historySettings.ts:64 src/lib/ui/indicator.ts:52
+#: src/lib/preferences/general/historySettings.ts:64
+#: src/lib/ui/clipboardDialog.ts:129 src/lib/ui/clipboardDialog.ts:234
+#: src/lib/ui/indicator.ts:52
 msgid "Clear"
 msgstr "Очистить"
 
@@ -1715,7 +1717,7 @@ msgstr "С__имвол"
 msgid "Colo__r"
 msgstr "Цв__ет"
 
-#: src/lib/ui/searchEntry.ts:272
+#: src/lib/ui/searchEntry.ts:271
 msgid "Type to search"
 msgstr "Введите текст для поиска"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Copyous\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-07 17:29+0000\n"
+"POT-Creation-Date: 2025-12-26 00:18+0000\n"
 "PO-Revision-Date: 2025-12-06 04:59+0100\n"
 "Last-Translator: Axel Haustant <noirbizarre@gmail.com>\n"
 "Language-Team: \n"
@@ -1202,7 +1202,9 @@ msgstr ""
 "Choisissez ce qu'il advient de votre historique du presse-papiers lorsque "
 "vous redémarrez, vous déconnectez ou éteignez votre système"
 
-#: src/lib/preferences/general/historySettings.ts:64 src/lib/ui/indicator.ts:52
+#: src/lib/preferences/general/historySettings.ts:64
+#: src/lib/ui/clipboardDialog.ts:129 src/lib/ui/clipboardDialog.ts:234
+#: src/lib/ui/indicator.ts:52
 msgid "Clear"
 msgstr "Effacer"
 
@@ -1749,7 +1751,7 @@ msgstr "C__aractère"
 msgid "Colo__r"
 msgstr "Couleu__r"
 
-#: src/lib/ui/searchEntry.ts:272
+#: src/lib/ui/searchEntry.ts:271
 msgid "Type to search"
 msgstr "Tapez pour rechercher"
 
