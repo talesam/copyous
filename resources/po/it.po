@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Copyous\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-24 20:46+0000\n"
+"POT-Creation-Date: 2026-03-25 23:39+0000\n"
 "PO-Revision-Date: 2025-12-14 10:45+0100\n"
 "Last-Translator: Fabian Esposito <fabian.esposito@outlook.com>\n"
 "Language-Team: Italiano\n"
@@ -620,11 +620,23 @@ msgstr "Apri menu"
 msgid "Middle Click Action"
 msgstr "Azione clic centrale"
 
-#: src/lib/preferences/shortcuts/itemShortcuts.ts:65
+#: src/lib/preferences/shortcuts/itemShortcuts.ts:66
+msgid "Swap Copy Shortcut"
+msgstr ""
+
+#: src/lib/preferences/shortcuts/itemShortcuts.ts:67
+msgid "Swap copy and paste shortcuts"
+msgstr ""
+
+#: src/lib/preferences/shortcuts/itemShortcuts.ts:71
+msgid "Paste Item"
+msgstr ""
+
+#: src/lib/preferences/shortcuts/itemShortcuts.ts:73
 msgid "Copy Item"
 msgstr "Copia elemento"
 
-#: src/lib/preferences/shortcuts/itemShortcuts.ts:66
+#: src/lib/preferences/shortcuts/itemShortcuts.ts:75
 msgid "Activate Default Action"
 msgstr "Attiva azione predefinita"
 
@@ -923,29 +935,18 @@ msgid "Prevents tagged clipboard items from being deleted"
 msgstr "Impedisce la cancellazione degli elementi contrassegnati degli appunti"
 
 #: src/lib/preferences/general/behaviorSettings.ts:46
-msgid "Paste on Copy"
-msgstr "Incolla alla copia"
-
-#: src/lib/preferences/general/behaviorSettings.ts:47
-msgid ""
-"Automatically paste clipboard items when selected from clipboard history"
-msgstr ""
-"Incolla automaticamente gli elementi degli appunti quando vengono "
-"selezionati dalla cronologia degli appunti"
-
-#: src/lib/preferences/general/behaviorSettings.ts:52
 msgid "Sync Primary Clipboard"
 msgstr "Sincronizza gli appunti primari"
 
-#: src/lib/preferences/general/behaviorSettings.ts:53
+#: src/lib/preferences/general/behaviorSettings.ts:47
 msgid "Also copy clipboard items to the primary clipboard"
 msgstr "Copia anche gli elementi degli appunti nella clipboard primaria"
 
-#: src/lib/preferences/general/behaviorSettings.ts:58
+#: src/lib/preferences/general/behaviorSettings.ts:52
 msgid "Update Date on Copy"
 msgstr "Aggiorna la data alla copia"
 
-#: src/lib/preferences/general/behaviorSettings.ts:59
+#: src/lib/preferences/general/behaviorSettings.ts:53
 msgid ""
 "Update the copied date of clipboard items when selected from clipboard "
 "history"
@@ -1878,17 +1879,26 @@ msgstr "Disabilita avviso"
 msgid "Failed to load JSON"
 msgstr ""
 
-#: src/prefs.ts:70
+#: src/prefs.ts:74
 msgid "General"
 msgstr "Generale"
 
-#: src/prefs.ts:90
+#: src/prefs.ts:94
 msgid "Customization"
 msgstr "Personalizzazione"
 
-#: src/prefs.ts:107
+#: src/prefs.ts:111
 msgid "Shortcuts"
 msgstr "Scorciatoie"
+
+#~ msgid "Paste on Copy"
+#~ msgstr "Incolla alla copia"
+
+#~ msgid ""
+#~ "Automatically paste clipboard items when selected from clipboard history"
+#~ msgstr ""
+#~ "Incolla automaticamente gli elementi degli appunti quando vengono "
+#~ "selezionati dalla cronologia degli appunti"
 
 #~ msgid "Set the color scheme of the custom theme"
 #~ msgstr "Imposta lo schema di colori del tema personalizzato"

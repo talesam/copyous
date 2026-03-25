@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Copyous\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-24 20:46+0000\n"
+"POT-Creation-Date: 2026-03-25 23:39+0000\n"
 "PO-Revision-Date: 2026-03-18 07:29+0300\n"
 "Last-Translator: Muha Aliss <muhaaliss@pm.me>\n"
 "Language-Team: Turkish\n"
@@ -621,11 +621,23 @@ msgstr "Menüyü Aç"
 msgid "Middle Click Action"
 msgstr "Orta Tıklama Eylemi"
 
-#: src/lib/preferences/shortcuts/itemShortcuts.ts:65
+#: src/lib/preferences/shortcuts/itemShortcuts.ts:66
+msgid "Swap Copy Shortcut"
+msgstr ""
+
+#: src/lib/preferences/shortcuts/itemShortcuts.ts:67
+msgid "Swap copy and paste shortcuts"
+msgstr ""
+
+#: src/lib/preferences/shortcuts/itemShortcuts.ts:71
+msgid "Paste Item"
+msgstr ""
+
+#: src/lib/preferences/shortcuts/itemShortcuts.ts:73
 msgid "Copy Item"
 msgstr "Öğeyi Kopyala"
 
-#: src/lib/preferences/shortcuts/itemShortcuts.ts:66
+#: src/lib/preferences/shortcuts/itemShortcuts.ts:75
 msgid "Activate Default Action"
 msgstr "Varsayılan Eylemi Etkinleştir"
 
@@ -917,27 +929,18 @@ msgid "Prevents tagged clipboard items from being deleted"
 msgstr "Etiketlenmiş pano öğelerinin silinmesini önler"
 
 #: src/lib/preferences/general/behaviorSettings.ts:46
-msgid "Paste on Copy"
-msgstr "Kopyalamada Yapıştır"
-
-#: src/lib/preferences/general/behaviorSettings.ts:47
-msgid ""
-"Automatically paste clipboard items when selected from clipboard history"
-msgstr "Pano geçmişinden bir öğe seçildiğinde otomatik olarak yapıştır"
-
-#: src/lib/preferences/general/behaviorSettings.ts:52
 msgid "Sync Primary Clipboard"
 msgstr "Birincil Panoyu Senkronize Et"
 
-#: src/lib/preferences/general/behaviorSettings.ts:53
+#: src/lib/preferences/general/behaviorSettings.ts:47
 msgid "Also copy clipboard items to the primary clipboard"
 msgstr "Pano öğelerini aynı zamanda birincil panoya da kopyala"
 
-#: src/lib/preferences/general/behaviorSettings.ts:58
+#: src/lib/preferences/general/behaviorSettings.ts:52
 msgid "Update Date on Copy"
 msgstr "Kopyalamada Tarihi Güncelle"
 
-#: src/lib/preferences/general/behaviorSettings.ts:59
+#: src/lib/preferences/general/behaviorSettings.ts:53
 msgid ""
 "Update the copied date of clipboard items when selected from clipboard "
 "history"
@@ -1858,17 +1861,24 @@ msgstr "Uyarıyı Devre Dışı Bırak"
 msgid "Failed to load JSON"
 msgstr ""
 
-#: src/prefs.ts:70
+#: src/prefs.ts:74
 msgid "General"
 msgstr "Genel"
 
-#: src/prefs.ts:90
+#: src/prefs.ts:94
 msgid "Customization"
 msgstr "Özelleştirme"
 
-#: src/prefs.ts:107
+#: src/prefs.ts:111
 msgid "Shortcuts"
 msgstr "Kısayollar"
+
+#~ msgid "Paste on Copy"
+#~ msgstr "Kopyalamada Yapıştır"
+
+#~ msgid ""
+#~ "Automatically paste clipboard items when selected from clipboard history"
+#~ msgstr "Pano geçmişinden bir öğe seçildiğinde otomatik olarak yapıştır"
 
 #~ msgid "Set the color scheme of the custom theme"
 #~ msgstr "Özel temanın renk şemasını ayarla"

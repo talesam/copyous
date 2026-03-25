@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Copyous\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-24 20:46+0000\n"
+"POT-Creation-Date: 2026-03-25 23:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -613,11 +613,23 @@ msgstr ""
 msgid "Middle Click Action"
 msgstr ""
 
-#: src/lib/preferences/shortcuts/itemShortcuts.ts:65
+#: src/lib/preferences/shortcuts/itemShortcuts.ts:66
+msgid "Swap Copy Shortcut"
+msgstr ""
+
+#: src/lib/preferences/shortcuts/itemShortcuts.ts:67
+msgid "Swap copy and paste shortcuts"
+msgstr ""
+
+#: src/lib/preferences/shortcuts/itemShortcuts.ts:71
+msgid "Paste Item"
+msgstr ""
+
+#: src/lib/preferences/shortcuts/itemShortcuts.ts:73
 msgid "Copy Item"
 msgstr ""
 
-#: src/lib/preferences/shortcuts/itemShortcuts.ts:66
+#: src/lib/preferences/shortcuts/itemShortcuts.ts:75
 msgid "Activate Default Action"
 msgstr ""
 
@@ -902,27 +914,18 @@ msgid "Prevents tagged clipboard items from being deleted"
 msgstr ""
 
 #: src/lib/preferences/general/behaviorSettings.ts:46
-msgid "Paste on Copy"
-msgstr ""
-
-#: src/lib/preferences/general/behaviorSettings.ts:47
-msgid ""
-"Automatically paste clipboard items when selected from clipboard history"
-msgstr ""
-
-#: src/lib/preferences/general/behaviorSettings.ts:52
 msgid "Sync Primary Clipboard"
 msgstr ""
 
-#: src/lib/preferences/general/behaviorSettings.ts:53
+#: src/lib/preferences/general/behaviorSettings.ts:47
 msgid "Also copy clipboard items to the primary clipboard"
 msgstr ""
 
-#: src/lib/preferences/general/behaviorSettings.ts:58
+#: src/lib/preferences/general/behaviorSettings.ts:52
 msgid "Update Date on Copy"
 msgstr ""
 
-#: src/lib/preferences/general/behaviorSettings.ts:59
+#: src/lib/preferences/general/behaviorSettings.ts:53
 msgid ""
 "Update the copied date of clipboard items when selected from clipboard "
 "history"
@@ -1822,14 +1825,14 @@ msgstr ""
 msgid "Failed to load JSON"
 msgstr ""
 
-#: src/prefs.ts:70
+#: src/prefs.ts:74
 msgid "General"
 msgstr ""
 
-#: src/prefs.ts:90
+#: src/prefs.ts:94
 msgid "Customization"
 msgstr ""
 
-#: src/prefs.ts:107
+#: src/prefs.ts:111
 msgid "Shortcuts"
 msgstr ""
