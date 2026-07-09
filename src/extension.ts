@@ -1,8 +1,8 @@
 import GLib from 'gi://GLib';
 import type Gio from 'gi://Gio';
 
-import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import { ConsoleLike, Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 import type { HLJSApi, LanguageFn } from 'highlight.js';
 
@@ -142,7 +142,7 @@ export default class CopyousExtension extends Extension {
 		this._enableDeferredId = GLib.idle_add(GLib.PRIORITY_LOW, () => {
 			this._enableDeferredId = 0;
 			this._runDeferredEnable().catch((e: unknown) => {
-				console.error(`[Copyous] Failed to enable: ${e instanceof Error ? e.stack ?? e.message : String(e)}`);
+				console.error(`[Copyous] Failed to enable: ${e instanceof Error ? (e.stack ?? e.message) : String(e)}`);
 			});
 			return GLib.SOURCE_REMOVE;
 		});

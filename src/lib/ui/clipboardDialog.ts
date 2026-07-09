@@ -255,6 +255,7 @@ class ClipboardDialogFooter extends St.BoxLayout {
 export class ClipboardDialog extends St.Widget {
 	private _grab: Clutter.Grab | null = null;
 	private _open: boolean = false;
+	private _closing: boolean = false;
 	private _updateCursor: boolean = true;
 	private _nextCursor: [number, number] | null = null;
 	private _cursor: [number, number] | null = null;
@@ -435,7 +436,7 @@ export class ClipboardDialog extends St.Widget {
 	}
 
 	public open() {
-		if (this.opened) return;
+		if (this.opened || this._closing) return;
 
 		// Lazy: layout settings are read on first open (and after any change)
 		// instead of in the constructor, keeping the deferred enable cheap.
@@ -505,6 +506,7 @@ export class ClipboardDialog extends St.Widget {
 	public close() {
 		if (!this.opened) return;
 
+		this._closing = true;
 		this.opened = false;
 		this._updateCursor = true;
 		this._clipboardItemMenu.close();
@@ -546,6 +548,7 @@ export class ClipboardDialog extends St.Widget {
 			onComplete: () => {
 				Main.popModal(this._grab);
 				this._grab = null;
+				this._closing = false;
 				this.hide();
 				global.compositor.enable_unredirect();
 			},
