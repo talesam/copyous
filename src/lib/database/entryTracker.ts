@@ -29,7 +29,7 @@ export class ClipboardEntryTracker {
 
 	async init(): Promise<ClipboardEntry[]> {
 		if (this._database) {
-			await this.clear();
+			// Reinitializing the backend must never apply the history cleanup policy.
 			await this.destroy();
 		}
 
@@ -186,6 +186,7 @@ export class ClipboardEntryTracker {
 	public async destroy() {
 		await this._database?.close();
 		this._database = undefined;
+		this._entries.clear();
 	}
 
 	/**
@@ -228,7 +229,7 @@ export class ClipboardEntryTracker {
 
 		const now = GLib.DateTime.new_now_utc();
 		const olderThan = now.add_minutes(-M)!;
-		const protectTagged = this.ext.settings.get_enum('clipboard-history') === ClipboardHistory.KeepPinnedAndTagged;
+		const protectTagged = this.shouldProtectTagged();
 
 		for (const entry of this._entries.values()) {
 			if (entry.pinned || (protectTagged && entry.tag)) continue;
@@ -241,9 +242,14 @@ export class ClipboardEntryTracker {
 	public async deleteOldest() {
 		const N = this.ext.settings.get_int('history-length');
 		const M = this.ext.settings.get_int('history-time');
-		const protectTagged = this.ext.settings.get_enum('clipboard-history') === ClipboardHistory.KeepPinnedAndTagged;
+		const protectTagged = this.shouldProtectTagged();
 		const deleted = await this._database?.deleteOldest(N, M, protectTagged);
 		if (deleted) deleted.forEach((id) => this.deleteFromDatabase(id));
+	}
+
+	private shouldProtectTagged(): boolean {
+		const history = this.ext.settings.get_enum('clipboard-history');
+		return history === ClipboardHistory.KeepPinnedAndTagged;
 	}
 
 	private track(...entries: ClipboardEntry[]) {
