@@ -356,8 +356,10 @@ export class GdaDatabase implements Database {
 				return [];
 			}
 
-			// SELECT id FROM table (WHERE NOT (pinned == true OR tag IS NOT NULL))?
-			const [selectBuilder, where] = this.selectToDeleteBuilder(history === ClipboardHistory.KeepPinnedAndTagged);
+			const keepSaved =
+				history === ClipboardHistory.KeepPinned || history === ClipboardHistory.KeepPinnedAndTagged;
+			const protectTagged = history === ClipboardHistory.KeepPinnedAndTagged;
+			const [selectBuilder, where] = this.selectToDeleteBuilder(keepSaved, 0, protectTagged);
 
 			const selectStmt = selectBuilder.get_statement();
 			const datamodel = await async_statement_execute_select<ClipboardEntry>(
@@ -642,7 +644,7 @@ export class GdaDatabase implements Database {
 		return false;
 	}
 
-	public async deleteOldest(offset: number, olderThanMinutes: number): Promise<number[]> {
+	public async deleteOldest(offset: number, olderThanMinutes: number, protectTagged: boolean): Promise<number[]> {
 		try {
 			// WITH select1 AS (...) (SELECT id FROM select1) UNION (select2)
 			const selectBuilder = new this._Gda.SqlBuilder({
@@ -651,7 +653,7 @@ export class GdaDatabase implements Database {
 			selectBuilder.compound_set_type(this._Gda.SqlStatementCompoundType.UNION);
 
 			// SELECT id FROM table WHERE NOT (pinned == true OR tag IS NOT NULL) ORDER BY datetime LIMIT -1 OFFSET offset
-			const [select1Builder] = this.selectToDeleteBuilder();
+			const [select1Builder] = this.selectToDeleteBuilder(true, 0, protectTagged);
 			select1Builder.select_order_by(select1Builder.add_id('datetime'), false, null);
 			select1Builder.select_set_limit(add_expr_value(select1Builder, -1), add_expr_value(select1Builder, offset));
 
@@ -664,7 +666,7 @@ export class GdaDatabase implements Database {
 				workAroundBuilder.select_add_target('select1', null);
 				selectBuilder.compound_add_sub_select_from_builder(workAroundBuilder);
 
-				const [select2Builder] = this.selectToDeleteBuilder(true, olderThanMinutes);
+				const [select2Builder] = this.selectToDeleteBuilder(true, olderThanMinutes, protectTagged);
 				selectBuilder.compound_add_sub_select_from_builder(select2Builder as Gda.SqlBuilder);
 
 				// SELECT id FROM (SELECT id FROM table WHERE ...)
@@ -715,6 +717,7 @@ export class GdaDatabase implements Database {
 	private selectToDeleteBuilder(
 		includeWhere: boolean = true,
 		olderThanMinutes: number = 0,
+		protectTagged: boolean = true,
 	): [SqlBuilder<ClipboardEntry>, Gda.SqlBuilderId | null] {
 		// SELECT id FROM table (WHERE NOT (pinned == true OR tag IS NOT NULL) (AND datetime < DATETIME('now', '-n minutes'))?)?
 		const builder = new this._Gda.SqlBuilder({
@@ -725,23 +728,22 @@ export class GdaDatabase implements Database {
 
 		let where = null;
 		if (includeWhere) {
-			// WHERE NOT (pinned == true OR tag IS NOT NULL)
-			where = builder.add_cond(
-				this._Gda.SqlOperatorType.NOT,
-				builder.add_cond(
-					this._Gda.SqlOperatorType.OR,
-					builder.add_cond(
-						this._Gda.SqlOperatorType.EQ,
-						builder.add_id('pinned'),
-						add_expr_value(builder, true),
-						0,
-					),
-					builder.add_cond(this._Gda.SqlOperatorType.ISNOTNULL, builder.add_id('tag'), 0, 0),
-					0,
-				),
-				0,
+			const pinnedCondition = builder.add_cond(
+				this._Gda.SqlOperatorType.EQ,
+				builder.add_id('pinned'),
+				add_expr_value(builder, true),
 				0,
 			);
+			const protectedCondition = protectTagged
+				? builder.add_cond(
+						this._Gda.SqlOperatorType.OR,
+						pinnedCondition,
+						builder.add_cond(this._Gda.SqlOperatorType.ISNOTNULL, builder.add_id('tag'), 0, 0),
+						0,
+					)
+				: pinnedCondition;
+
+			where = builder.add_cond(this._Gda.SqlOperatorType.NOT, protectedCondition, 0, 0);
 
 			// AND datetime < DATETIME('now', '-n minutes')
 			if (olderThanMinutes > 0) {

@@ -169,7 +169,8 @@ export interface Database {
 	 * Delete the oldest entries of the database.
 	 * @param offset The number of entries to keep.
 	 * @param olderThanMinutes Items older than this value will be deleted.
+	 * @param protectTagged Whether tagged items should be kept.
 	 * @returns The ids of entries that were deleted.
 	 */
-	deleteOldest(offset: number, olderThanMinutes: number): Promise<number[]>;
+	deleteOldest(offset: number, olderThanMinutes: number, protectTagged: boolean): Promise<number[]>;
 }

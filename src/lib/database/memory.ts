@@ -35,6 +35,16 @@ export class MemoryDatabase implements Database {
 					}
 				}
 				break;
+			case ClipboardHistory.KeepPinned:
+				deleted = [];
+				for (const [key, entry] of this._entries) {
+					if (!entry.pinned) {
+						this._entries.delete(key);
+						this._keys.delete(entry.id);
+						deleted.push(entry.id);
+					}
+				}
+				break;
 			case ClipboardHistory.KeepAll:
 				break;
 		}
@@ -108,12 +118,17 @@ export class MemoryDatabase implements Database {
 		return Promise.resolve(false);
 	}
 
-	public async deleteOldest(offset: number, olderThanMinutes: number): Promise<number[]> {
+	public async deleteOldest(offset: number, olderThanMinutes: number, protectTagged: boolean): Promise<number[]> {
 		const entries = await this.entries();
+<<<<<<< Updated upstream
 		let deleted = entries
 			.filter((e) => !(e.pinned || e.tag))
 			.map((e) => e.id)
 			.slice(offset);
+=======
+		const unprotected = entries.filter((e) => !e.pinned && !(protectTagged && e.tag));
+		const deleted = unprotected.slice(offset).map((e) => e.id);
+>>>>>>> Stashed changes
 
 		if (olderThanMinutes > 0) {
 			const now = GLib.DateTime.new_now_utc();

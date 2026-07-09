@@ -1,100 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="https://gitlab.gnome.org/GNOME/glib/-/raw/HEAD/gio/gschema.dtd"?>
 <schemalist>
-	<enum id="org.gnome.shell.extensions.copyous.DatabaseBackend">
-		<value nick="default" value="0"/>
-		<value nick="memory" value="1"/>
-		<value nick="sqlite" value="2"/>
-		<value nick="json" value="3"/>
-	</enum>
-
-	<enum id="org.gnome.shell.extensions.copyous.ClipboardHistory">
-		<value nick="clear" value="0"/>
-		<value nick="keep-pinned-and-tagged" value="1"/>
-		<value nick="keep-all" value="2"/>
-	</enum>
-
-	<enum id="org.gnome.shell.extensions.copyous.Orientation">
-		<value nick="horizontal" value="0"/>
-		<value nick="vertical" value="1"/>
-	</enum>
-
-	<enum id="org.gnome.shell.extensions.copyous.Position">
-		<value nick="top" value="0"/>
-		<!-- <value nick="left" value="0" /> -->
-		<value nick="center" value="1" />
-		<value nick="bottom" value="2"/>
-		<!-- <value nick="right" value="2" /> -->
-		<value nick="fill" value="3" />
-	</enum>
-
-	<enum id="org.gnome.shell.extensions.copyous.HeaderControlsVisibility">
-		<value nick="visible" value="0"/>
-		<value nick="visible-on-hover" value="1"/>
-		<value nick="hidden" value="2"/>
-	</enum>
-
-	<enum id="org.gnome.shell.extensions.copyous.Theme">
-		<value nick="default" value="0"/>
-		<value nick="yaru" value="1"/>
-		<value nick="custom" value="2"/>
-	</enum>
-
-	<enum id="org.gnome.shell.extensions.copyous.ColorScheme">
-		<value nick="system" value="0"/>
-		<value nick="dark" value="1"/>
-		<value nick="light" value="2"/>
-		<value nick="high-contrast" value="3"/>
-	</enum>
-
-	<enum id="org.gnome.shell.extensions.copyous.CustomColorScheme">
-		<value nick="dark" value="0"/>
-		<value nick="light" value="1"/>
-	</enum>
-
-	<enum id="org.gnome.shell.extensions.copyous.OpenClipboardDialogBehavior">
-		<value nick="toggle" value="0"/>
-		<value nick="open-or-select-next" value="1"/>
-	</enum>
-
-	<enum id="org.gnome.shell.extensions.copyous.MiddleClickAction">
-		<value nick="none" value="0"/>
-		<value nick="pin" value="1"/>
-		<value nick="delete" value="2"/>
-	</enum>
-
-	<enum id="org.gnome.shell.extensions.copyous.IndicatorDisplay">
-		<value nick="hidden" value="0"/>
-		<value nick="icon-only" value="1"/>
-		<value nick="clipboard-content-only" value="2"/>
-		<value nick="icon-and-clipboard-content" value="3"/>
-	</enum>
-
-	<enum id="org.gnome.shell.extensions.copyous.TextCountMode">
-		<value nick="characters" value="0"/>
-		<value nick="words" value="1"/>
-		<value nick="lines" value="2"/>
-	</enum>
-
-	<enum id="org.gnome.shell.extensions.copyous.BackgroundSize">
-		<value nick="cover" value="0" />
-		<value nick="contain" value="1" />
-	</enum>
-
-	<flags id="org.gnome.shell.extensions.copyous.file-item.FilePreviewType">
-		<value nick="text" value="1"/>
-		<value nick="image" value="2"/>
-		<value nick="thumbnail" value="4" />
-	</flags>
-
-	<enum id="org.gnome.shell.extensions.copyous.file-item.FilePreviewVisibility">
-		<value nick="file-preview" value="0"/>
-		<value nick="file-info" value="1"/>
-		<value nick="file-preview-or-file-info" value="2"/>
-		<value nick="file-preview-and-file-info" value="3"/>
-		<value nick="hidden" value="4"/>
-	</enum>
-
 	<schema id="org.gnome.shell.extensions.copyous" path="/org/gnome/shell/extensions/copyous/">
 		<!-- State -->
 		<key name="incognito" type="b">
@@ -124,18 +30,18 @@
 			<summary>Path to the database. When empty defaults to {XDG_DATA_HOME}/{EXTENSION UUID}/clipboard.{db,json} depending on the backend.</summary>
 		</key>
 		<key name="clipboard-history" enum="org.gnome.shell.extensions.copyous.ClipboardHistory">
-			<default>'keep-pinned-and-tagged'</default>
+			<default>'keep-pinned'</default>
 			<summary>Choose what to do with your clipboard history when you restart, log out, or shut down your system</summary>
 		</key>
 		<key name="history-length" type="i">
 			<default>50</default>
 			<range min="10" max="500"/>
-			<summary>Number of unpinned and untagged items to keep in the clipboard history</summary>
+			<summary>Number of unpinned items to keep in the clipboard history</summary>
 		</key>
 		<key name="history-time" type="i">
 			<default>0</default>
 			<range min="0" max="1440" />
-			<summary>Number of minutes to keep unpinned and untagged items in the clipboard history. Set to 0 to disable the time limit</summary>
+			<summary>Number of minutes to keep unpinned items in the clipboard history. Set to 0 to disable the time limit</summary>
 		</key>
 
 		<!-- Behavior -->
@@ -156,7 +62,7 @@
 			<summary>Prevents pinned clipboard items from being deleted</summary>
 		</key>
 		<key name="protect-tagged" type="b">
-			<default>true</default>
+			<default>false</default>
 			<summary>Prevents tagged clipboard items from being deleted</summary>
 		</key>
 		<key name="paste-on-copy" type="b">
@@ -383,136 +289,4 @@
 		</key>
 	</schema>
 
-	<schema id="org.gnome.shell.extensions.copyous.text-item" path="/org/gnome/shell/extensions/copyous/text-item/">
-		<key name="show-text-info" type="b">
-			<default>false</default>
-			<summary>Show extra information</summary>
-		</key>
-		<key name="text-count-mode" enum="org.gnome.shell.extensions.copyous.TextCountMode">
-			<default>'characters'</default>
-			<summary>Show the number of characters, words or lines</summary>
-		</key>
-	</schema>
-
-	<schema id="org.gnome.shell.extensions.copyous.code-item" path="/org/gnome/shell/extensions/copyous/code-item/">
-		<key name="syntax-highlighting" type="b">
-			<default>true</default>
-			<summary>Enable syntax highlighting</summary>
-		</key>
-		<key name="show-line-numbers" type="b">
-			<default>true</default>
-			<summary>Show line numbers</summary>
-		</key>
-		<key name="show-code-info" type="b">
-			<default>false</default>
-			<summary>Show extra information</summary>
-		</key>
-		<key name="text-count-mode" enum="org.gnome.shell.extensions.copyous.TextCountMode">
-			<default>'characters'</default>
-			<summary>Show the number of characters, words or lines</summary>
-		</key>
-	</schema>
-
-	<schema id="org.gnome.shell.extensions.copyous.image-item" path="/org/gnome/shell/extensions/copyous/image-item/">
-		<key name="show-image-info" type="b">
-			<default>false</default>
-			<summary>Show extra information</summary>
-		</key>
-		<key name="background-size" enum="org.gnome.shell.extensions.copyous.BackgroundSize">
-			<default>'cover'</default>
-			<summary>Background size of the image</summary>
-		</key>
-	</schema>
-
-	<schema id="org.gnome.shell.extensions.copyous.file-item" path="/org/gnome/shell/extensions/copyous/file-item/">
-		<key name="file-preview-visibility" enum="org.gnome.shell.extensions.copyous.file-item.FilePreviewVisibility">
-			<default>'file-preview-or-file-info'</default>
-			<summary>File preview shows a preview of the contents of a file. File info shows some information about the file.</summary>
-		</key>
-		<key name="file-preview-types" flags="org.gnome.shell.extensions.copyous.file-item.FilePreviewType">
-			<default>['text','image','thumbnail']</default>
-		</key>
-		<key name="file-preview-exclusion-patterns" type="as">
-			<default>[]</default>
-			<summary>Files matching these glob patterns will not have a preview</summary>
-		</key>
-		<key name="background-size" enum="org.gnome.shell.extensions.copyous.BackgroundSize">
-			<default>'cover'</default>
-			<summary>Background size of the image preview</summary>
-		</key>
-		<key name="syntax-highlighting" type="b">
-			<default>true</default>
-			<summary>Enable syntax highlighting in the text preview</summary>
-		</key>
-		<key name="show-line-numbers" type="b">
-			<default>true</default>
-			<summary>Show line numbers in the text preview</summary>
-		</key>
-	</schema>
-
-	<schema id="org.gnome.shell.extensions.copyous.link-item" path="/org/gnome/shell/extensions/copyous/link-item/">
-		<key name="show-link-preview" type="b">
-			<default>true</default>
-			<summary>Show a preview of the link</summary>
-		</key>
-		<key name="show-link-preview-image" type="b">
-			<default>true</default>
-			<summary>Show a preview image of the link</summary>
-		</key>
-		<key name="link-preview-image-background-size" enum="org.gnome.shell.extensions.copyous.BackgroundSize">
-			<default>'contain'</default>
-			<summary>Background size of the preview image of the link</summary>
-		</key>
-		<key name="link-preview-orientation" enum="org.gnome.shell.extensions.copyous.Orientation">
-			<default>'vertical'</default>
-			<summary>Orientation of the link preview</summary>
-		</key>
-		<key name="link-preview-exclusion-patterns" type="as">
-			<default>[]</default>
-			<summary>Links matching these regex patterns will not have a preview</summary>
-		</key>
-	</schema>
-
-	<schema id="org.gnome.shell.extensions.copyous.character-item" path="/org/gnome/shell/extensions/copyous/character-item/">
-		<key name="max-characters" type="i">
-			<default>1</default>
-			<range min="1" max="4"/>
-			<summary>Maximum number of characters that are recognized as a character</summary>
-		</key>
-		<key name="show-unicode" type="b">
-			<default>false</default>
-			<summary>Show the Unicode of the character</summary>
-		</key>
-	</schema>
-
-	<schema id="org.gnome.shell.extensions.copyous.theme" path="/org/gnome/shell/extensions/copyous/theme/">
-		<key name="theme" enum="org.gnome.shell.extensions.copyous.Theme">
-			<default>'default'</default>
-			<summary>The preferred theme</summary>
-		</key>
-		<key name="color-scheme" enum="org.gnome.shell.extensions.copyous.ColorScheme">
-			<default>'system'</default>
-			<summary>The color scheme of the theme</summary>
-		</key>
-		<key name="custom-color-scheme" enum="org.gnome.shell.extensions.copyous.CustomColorScheme">
-			<default>'dark'</default>
-			<summary>The color scheme of the custom theme</summary>
-		</key>
-		<key name="custom-bg-color" type="s">
-			<default>''</default>
-			<summary>The background color of the clipboard dialog</summary>
-		</key>
-		<key name="custom-fg-color" type="s">
-			<default>''</default>
-			<summary>The text color of the clipboard dialog</summary>
-		</key>
-		<key name="custom-card-bg-color" type="s">
-			<default>''</default>
-			<summary>The background color of clipboard items</summary>
-		</key>
-		<key name="custom-search-bg-color" type="s">
-			<default>''</default>
-			<summary>The background color of the search bar</summary>
-		</key>
-	</schema>
 </schemalist>

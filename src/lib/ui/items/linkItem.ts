@@ -1,4 +1,5 @@
 import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import Pango from 'gi://Pango';
@@ -14,7 +15,6 @@ import { BackgroundSize, LinkItemSettings } from '../../common/settings.js';
 import { ClipboardEntry, LinkMetadata } from '../../database/database.js';
 import { tryGetLinkImage, tryGetMetadata } from '../../misc/link.js';
 import { ImagePreview } from '../components/contentPreview.js';
-import { SearchQuery } from '../searchEntry.js';
 import { ClipboardItem } from './clipboardItem.js';
 
 const SPACING = 3;
@@ -298,6 +298,7 @@ export class LinkItem extends ClipboardItem {
 	private readonly _url: St.Label;
 
 	private readonly _cancellable: Gio.Cancellable = new Gio.Cancellable();
+	private _previewIdleId: number = 0;
 
 	constructor(ext: CopyousExtension, entry: ClipboardEntry) {
 		super(ext, entry, Icon.Link, _('Link'));
@@ -315,20 +316,31 @@ export class LinkItem extends ClipboardItem {
 		this._content.add_child(this._url);
 
 		// Bind properties
-		this.linkItemSettings.connectObject('changed', this.updateLinkPreview.bind(this), this);
-		this.ext.settings.connectObject('changed::show-header', this.updateLinkPreview.bind(this), this);
+		this.linkItemSettings.connectObject('changed', this.queueLinkPreviewUpdate.bind(this), this);
+		this.ext.settings.connectObject('changed::show-header', this.queueLinkPreviewUpdate.bind(this), this);
 
 		this.bind_property('active', this._linkPreview, 'active', GObject.BindingFlags.DEFAULT);
 
-		this.updateLinkPreview().catch(() => {});
+		this.queueLinkPreviewUpdate();
 	}
 
-	public override search(query: SearchQuery): void {
+	protected override createSearchText(): readonly string[] {
 		const metadata: LinkMetadata = { title: null, description: null, image: null, ...this.entry.metadata };
 		const searchTexts = [this.entry.content];
 		if (metadata.title) searchTexts.push(metadata.title);
 		if (metadata.description) searchTexts.push(metadata.description);
-		this.visible = query.matchesEntry(this.visible, this.entry, ...searchTexts);
+		return searchTexts;
+	}
+
+	private queueLinkPreviewUpdate() {
+		if (this._previewIdleId) return;
+
+		const logger = this.ext.logger;
+		this._previewIdleId = GLib.idle_add(GLib.PRIORITY_LOW, () => {
+			this._previewIdleId = 0;
+			this.updateLinkPreview().catch(logger.error.bind(logger));
+			return GLib.SOURCE_REMOVE;
+		});
 	}
 
 	private async updateLinkPreview() {
@@ -370,6 +382,10 @@ export class LinkItem extends ClipboardItem {
 
 	override destroy() {
 		this.linkItemSettings.disconnectObject(this);
+		if (this._previewIdleId) {
+			GLib.source_remove(this._previewIdleId);
+			this._previewIdleId = 0;
+		}
 		this._cancellable.cancel();
 
 		super.destroy();

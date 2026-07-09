@@ -70,7 +70,7 @@ export class DbusService extends GObject.Object implements DBusInterface {
 	}
 
 	public ClearHistory(all: boolean) {
-		const history = all ? ClipboardHistory.Clear : ClipboardHistory.KeepPinnedAndTagged;
+		const history = all ? ClipboardHistory.Clear : ClipboardHistory.KeepPinned;
 		this.emit('clear-history', history);
 	}
 

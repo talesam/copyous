@@ -8,7 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Copyous\n"
 "Report-Msgid-Bugs-To: \n"
+<<<<<<< Updated upstream
 "POT-Creation-Date: 2026-04-26 12:23-0500\n"
+=======
+"POT-Creation-Date: 2026-07-09 00:11-0300\n"
+>>>>>>> Stashed changes
 "PO-Revision-Date: 2026-03-18 07:29+0300\n"
 "Last-Translator: Muha Aliss <muhaaliss@pm.me>\n"
 "Language-Team: Turkish\n"
@@ -126,8 +130,8 @@ msgstr "Renk Kopyalandı"
 #: src/lib/preferences/general/feedbackSettings.ts:259
 #: src/lib/preferences/general/feedbackSettings.ts:308
 #: src/lib/preferences/shortcuts/itemShortcuts.ts:39
-#: src/lib/ui/components/editDialog.ts:217
-#: src/lib/ui/components/editDialog.ts:244
+#: src/lib/ui/components/editDialog.ts:225
+#: src/lib/ui/components/editDialog.ts:252
 msgid "None"
 msgstr "Hiçbiri"
 
@@ -156,7 +160,7 @@ msgstr "Kod"
 #: src/lib/preferences/actions/actionDialog.ts:177
 #: src/lib/preferences/actions/actionDialog.ts:370
 #: src/lib/preferences/customization/items/fileItemCustomization.ts:79
-#: src/lib/ui/items/imageItem.ts:38
+#: src/lib/ui/items/imageItem.ts:37
 msgid "Image"
 msgstr "Resim"
 
@@ -170,7 +174,7 @@ msgstr "Dosya"
 #: src/lib/preferences/actions/actionDefaults.ts:148
 #: src/lib/preferences/actions/actionDialog.ts:179
 #: src/lib/preferences/actions/actionDialog.ts:376
-#: src/lib/ui/items/filesItem.ts:140
+#: src/lib/ui/items/filesItem.ts:139
 msgid "Files"
 msgstr "Dosyalar"
 
@@ -178,7 +182,7 @@ msgstr "Dosyalar"
 #: src/lib/preferences/actions/actionDialog.ts:180
 #: src/lib/preferences/actions/actionDialog.ts:379
 #: src/lib/preferences/customization/items/linkItemCustomization.ts:45
-#: src/lib/ui/items/linkItem.ts:303
+#: src/lib/ui/items/linkItem.ts:304
 msgid "Link"
 msgstr "Bağlantı"
 
@@ -217,7 +221,7 @@ msgstr "Hangi türlere izin verileceğini seç"
 #: src/lib/preferences/dependencies/dependencies.ts:224
 #: src/lib/preferences/general/appExclusionSettings.ts:171
 #: src/lib/preferences/shortcuts/shortcutRow.ts:131
-#: src/lib/ui/components/editDialog.ts:306 src/lib/ui/indicator.ts:47
+#: src/lib/ui/components/editDialog.ts:314 src/lib/ui/indicator.ts:47
 msgid "Cancel"
 msgstr "İptal"
 
@@ -347,7 +351,7 @@ msgid "Edit Action"
 msgstr "Eylemi Düzenle"
 
 #: src/lib/preferences/actions/actionDialog.ts:662
-#: src/lib/ui/components/editDialog.ts:313
+#: src/lib/ui/components/editDialog.ts:321
 msgid "Save"
 msgstr "Kaydet"
 
@@ -1488,7 +1492,7 @@ msgstr ""
 "pano geçmişine ne yapılacağını seç"
 
 #: src/lib/preferences/general/historySettings.ts:137
-#: src/lib/ui/clipboardDialog.ts:130 src/lib/ui/clipboardDialog.ts:235
+#: src/lib/ui/clipboardDialog.ts:134 src/lib/ui/clipboardDialog.ts:239
 #: src/lib/ui/indicator.ts:54
 msgid "Clear"
 msgstr "Temizle"
@@ -1496,6 +1500,10 @@ msgstr "Temizle"
 #: src/lib/preferences/general/historySettings.ts:137
 msgid "Keep All"
 msgstr "Hepsini Koru"
+
+#: src/lib/preferences/general/historySettings.ts:137
+msgid "Keep Pinned"
+msgstr ""
 
 #: src/lib/preferences/general/historySettings.ts:137
 msgid "Keep Pinned/Tagged"
@@ -1753,7 +1761,7 @@ msgstr "Eksik Dosya"
 msgid "Error"
 msgstr "Hata"
 
-#: src/lib/ui/components/editDialog.ts:269
+#: src/lib/ui/components/editDialog.ts:277
 msgid "Edit Clipboard Item"
 msgstr "Pano Öğesini Düzenle"
 
@@ -1770,22 +1778,22 @@ msgid "Are you sure you want to clear your clipboard history?"
 msgstr "Pano geçmişinizi temizlemek istediğinden emin misin?"
 
 #: src/lib/ui/indicator.ts:43
-msgid "Clear Pinned/Tagged Items"
-msgstr "İğnelenen/Etiketlenen Öğeleri Temizle"
+msgid "Clear Pinned Items"
+msgstr ""
 
-#: src/lib/ui/indicator.ts:102
+#: src/lib/ui/indicator.ts:99
 msgid "Incognito Mode"
 msgstr "Gizli Mod"
 
-#: src/lib/ui/indicator.ts:105
+#: src/lib/ui/indicator.ts:102
 msgid "Clear History"
 msgstr "Geçmişi Temizle"
 
-#: src/lib/ui/indicator.ts:106
+#: src/lib/ui/indicator.ts:103
 msgid "Settings"
 msgstr "Ayarlar"
 
-#: src/lib/ui/indicator.ts:199
+#: src/lib/ui/indicator.ts:196
 #, javascript-format
 msgid "%d File"
 msgid_plural "%d Files"
@@ -1796,14 +1804,14 @@ msgstr[1] "%d Dosya"
 msgid "Char"
 msgstr "Karakter"
 
-#: src/lib/ui/items/filesItem.ts:120
+#: src/lib/ui/items/filesItem.ts:119
 #, javascript-format
 msgid "%d more file"
 msgid_plural "%d more files"
 msgstr[0] "%d dosya daha"
 msgstr[1] "%d dosya daha"
 
-#: src/lib/ui/items/filesItem.ts:121
+#: src/lib/ui/items/filesItem.ts:120
 #, javascript-format
 msgid "%d file"
 msgid_plural "%d files"
@@ -1826,6 +1834,7 @@ msgstr "Pano Boş"
 msgid "No Items Found"
 msgstr "Öğe Bulunamadı"
 
+<<<<<<< Updated upstream
 #: src/lib/ui/searchEntry.ts:150
 msgid "__All"
 msgstr "__Hepsi"
@@ -1863,6 +1872,45 @@ msgid "Colo__r"
 msgstr "Re__nk"
 
 #: src/lib/ui/searchEntry.ts:273
+=======
+#: src/lib/ui/searchEntry.ts:154
+msgid "__All"
+msgstr "__Hepsi"
+
+#: src/lib/ui/searchEntry.ts:158
+msgid "__Text"
+msgstr "__Metin"
+
+#: src/lib/ui/searchEntry.ts:159
+msgid "__Code"
+msgstr "__Kod"
+
+#: src/lib/ui/searchEntry.ts:160
+msgid "__Image"
+msgstr "__Resim"
+
+#: src/lib/ui/searchEntry.ts:161
+msgid "__File"
+msgstr "__Dosya"
+
+#: src/lib/ui/searchEntry.ts:162
+msgid "File__s"
+msgstr "Dosy__alar"
+
+#: src/lib/ui/searchEntry.ts:163
+msgid "__Link"
+msgstr "__Bağlantı"
+
+#: src/lib/ui/searchEntry.ts:164
+msgid "C__haracter"
+msgstr "K__arakter"
+
+#: src/lib/ui/searchEntry.ts:165
+msgid "Colo__r"
+msgstr "Re__nk"
+
+#: src/lib/ui/searchEntry.ts:277
+>>>>>>> Stashed changes
 msgid "Type to search"
 msgstr "Aramak için yaz"
 

@@ -86,6 +86,10 @@ export class ClipboardScrollView extends St.ScrollView {
 		this._scrollContainer.loadItems(items);
 	}
 
+	public appendItems(items: ClipboardItem[]) {
+		this._scrollContainer.appendItems(items);
+	}
+
 	public clearItems() {
 		this._scrollContainer.clearItems();
 	}
@@ -104,6 +108,11 @@ export class ClipboardScrollView extends St.ScrollView {
 
 	public activateFirst() {
 		this._scrollContainer.activateFirst();
+	}
+
+	public preWarm() {
+		this.get_preferred_size();
+		this._scrollContainer.preWarm();
 	}
 
 	private updateSize() {

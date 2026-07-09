@@ -40,7 +40,7 @@ export class ConfirmClearHistoryDialog extends ModalDialog.ModalDialog {
 		});
 		this.contentLayout.add_child(content);
 
-		const checkbox = new CheckBox.CheckBox(_('Clear Pinned/Tagged Items'));
+		const checkbox = new CheckBox.CheckBox(_('Clear Pinned Items'));
 		content.add_child(checkbox);
 
 		this.addButton({
@@ -53,10 +53,7 @@ export class ConfirmClearHistoryDialog extends ModalDialog.ModalDialog {
 		this.addButton({
 			label: _('Clear'),
 			action: () => {
-				this.emit(
-					'clear-history',
-					checkbox.checked ? ClipboardHistory.Clear : ClipboardHistory.KeepPinnedAndTagged,
-				);
+				this.emit('clear-history', checkbox.checked ? ClipboardHistory.Clear : ClipboardHistory.KeepPinned);
 				this.close();
 			},
 		});

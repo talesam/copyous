@@ -8,8 +8,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Copyous\n"
 "Report-Msgid-Bugs-To: \n"
+<<<<<<< Updated upstream
 "POT-Creation-Date: 2026-04-26 12:23-0500\n"
 "PO-Revision-Date: 2026-04-17 08:33+0200\n"
+=======
+"POT-Creation-Date: 2026-07-09 00:11-0300\n"
+"PO-Revision-Date: 2026-04-30 18:05+0200\n"
+>>>>>>> Stashed changes
 "Last-Translator: Adam Lewicki <a.lewicki95@gmail.com>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -128,8 +133,8 @@ msgstr "Skopiowany kolor"
 #: src/lib/preferences/general/feedbackSettings.ts:259
 #: src/lib/preferences/general/feedbackSettings.ts:308
 #: src/lib/preferences/shortcuts/itemShortcuts.ts:39
-#: src/lib/ui/components/editDialog.ts:217
-#: src/lib/ui/components/editDialog.ts:244
+#: src/lib/ui/components/editDialog.ts:225
+#: src/lib/ui/components/editDialog.ts:252
 msgid "None"
 msgstr "Brak"
 
@@ -158,7 +163,7 @@ msgstr "Kod"
 #: src/lib/preferences/actions/actionDialog.ts:177
 #: src/lib/preferences/actions/actionDialog.ts:370
 #: src/lib/preferences/customization/items/fileItemCustomization.ts:79
-#: src/lib/ui/items/imageItem.ts:38
+#: src/lib/ui/items/imageItem.ts:37
 msgid "Image"
 msgstr "Obraz"
 
@@ -172,7 +177,7 @@ msgstr "Plik"
 #: src/lib/preferences/actions/actionDefaults.ts:148
 #: src/lib/preferences/actions/actionDialog.ts:179
 #: src/lib/preferences/actions/actionDialog.ts:376
-#: src/lib/ui/items/filesItem.ts:140
+#: src/lib/ui/items/filesItem.ts:139
 msgid "Files"
 msgstr "Pliki"
 
@@ -180,7 +185,7 @@ msgstr "Pliki"
 #: src/lib/preferences/actions/actionDialog.ts:180
 #: src/lib/preferences/actions/actionDialog.ts:379
 #: src/lib/preferences/customization/items/linkItemCustomization.ts:45
-#: src/lib/ui/items/linkItem.ts:303
+#: src/lib/ui/items/linkItem.ts:304
 msgid "Link"
 msgstr "Odnośnik"
 
@@ -219,7 +224,7 @@ msgstr "Wybierz dozwolone typy"
 #: src/lib/preferences/dependencies/dependencies.ts:224
 #: src/lib/preferences/general/appExclusionSettings.ts:171
 #: src/lib/preferences/shortcuts/shortcutRow.ts:131
-#: src/lib/ui/components/editDialog.ts:306 src/lib/ui/indicator.ts:47
+#: src/lib/ui/components/editDialog.ts:314 src/lib/ui/indicator.ts:47
 msgid "Cancel"
 msgstr "Anuluj"
 
@@ -350,7 +355,7 @@ msgid "Edit Action"
 msgstr "Edytuj akcję"
 
 #: src/lib/preferences/actions/actionDialog.ts:662
-#: src/lib/ui/components/editDialog.ts:313
+#: src/lib/ui/components/editDialog.ts:321
 msgid "Save"
 msgstr "Zapisz"
 
@@ -1498,7 +1503,7 @@ msgstr ""
 "wylogowywania lub zamykania systemu"
 
 #: src/lib/preferences/general/historySettings.ts:137
-#: src/lib/ui/clipboardDialog.ts:130 src/lib/ui/clipboardDialog.ts:235
+#: src/lib/ui/clipboardDialog.ts:134 src/lib/ui/clipboardDialog.ts:239
 #: src/lib/ui/indicator.ts:54
 msgid "Clear"
 msgstr "Wyczyść"
@@ -1506,6 +1511,10 @@ msgstr "Wyczyść"
 #: src/lib/preferences/general/historySettings.ts:137
 msgid "Keep All"
 msgstr "Zachowaj wszystko"
+
+#: src/lib/preferences/general/historySettings.ts:137
+msgid "Keep Pinned"
+msgstr ""
 
 #: src/lib/preferences/general/historySettings.ts:137
 msgid "Keep Pinned/Tagged"
@@ -1765,7 +1774,7 @@ msgstr "Brakujący plik"
 msgid "Error"
 msgstr "Błąd"
 
-#: src/lib/ui/components/editDialog.ts:269
+#: src/lib/ui/components/editDialog.ts:277
 msgid "Edit Clipboard Item"
 msgstr "Edytuj element schowka"
 
@@ -1782,22 +1791,22 @@ msgid "Are you sure you want to clear your clipboard history?"
 msgstr "Czy na pewno chcesz wyczyścić historię schowka?"
 
 #: src/lib/ui/indicator.ts:43
-msgid "Clear Pinned/Tagged Items"
-msgstr "Wyczyść przypięte/oznaczone elementy"
+msgid "Clear Pinned Items"
+msgstr ""
 
-#: src/lib/ui/indicator.ts:102
+#: src/lib/ui/indicator.ts:99
 msgid "Incognito Mode"
 msgstr "Tryb prywatny"
 
-#: src/lib/ui/indicator.ts:105
+#: src/lib/ui/indicator.ts:102
 msgid "Clear History"
 msgstr "Wyczyść historię"
 
-#: src/lib/ui/indicator.ts:106
+#: src/lib/ui/indicator.ts:103
 msgid "Settings"
 msgstr "Ustawienia"
 
-#: src/lib/ui/indicator.ts:199
+#: src/lib/ui/indicator.ts:196
 #, javascript-format
 msgid "%d File"
 msgid_plural "%d Files"
@@ -1809,7 +1818,7 @@ msgstr[2] "%d plików"
 msgid "Char"
 msgstr "Znak"
 
-#: src/lib/ui/items/filesItem.ts:120
+#: src/lib/ui/items/filesItem.ts:119
 #, javascript-format
 msgid "%d more file"
 msgid_plural "%d more files"
@@ -1817,7 +1826,7 @@ msgstr[0] "%d plik więcej"
 msgstr[1] "%d pliki więcej"
 msgstr[2] "%d plików więcej"
 
-#: src/lib/ui/items/filesItem.ts:121
+#: src/lib/ui/items/filesItem.ts:120
 #, javascript-format
 msgid "%d file"
 msgid_plural "%d files"
@@ -1841,6 +1850,7 @@ msgstr "Schowek jest pusty"
 msgid "No Items Found"
 msgstr "Nie znaleziono elementów"
 
+<<<<<<< Updated upstream
 #: src/lib/ui/searchEntry.ts:150
 msgid "__All"
 msgstr "__Wszystko"
@@ -1878,6 +1888,45 @@ msgid "Colo__r"
 msgstr "Kolo_r"
 
 #: src/lib/ui/searchEntry.ts:273
+=======
+#: src/lib/ui/searchEntry.ts:154
+msgid "__All"
+msgstr "__Wszystko"
+
+#: src/lib/ui/searchEntry.ts:158
+msgid "__Text"
+msgstr "__Tekst"
+
+#: src/lib/ui/searchEntry.ts:159
+msgid "__Code"
+msgstr "__Kod"
+
+#: src/lib/ui/searchEntry.ts:160
+msgid "__Image"
+msgstr "__Obraz"
+
+#: src/lib/ui/searchEntry.ts:161
+msgid "__File"
+msgstr "__Plik"
+
+#: src/lib/ui/searchEntry.ts:162
+msgid "File__s"
+msgstr "Plik_i"
+
+#: src/lib/ui/searchEntry.ts:163
+msgid "__Link"
+msgstr "__Odnośnik"
+
+#: src/lib/ui/searchEntry.ts:164
+msgid "C__haracter"
+msgstr "Z_nak"
+
+#: src/lib/ui/searchEntry.ts:165
+msgid "Colo__r"
+msgstr "Kolo_r"
+
+#: src/lib/ui/searchEntry.ts:277
+>>>>>>> Stashed changes
 msgid "Type to search"
 msgstr "Wpisz, aby wyszukać"
 

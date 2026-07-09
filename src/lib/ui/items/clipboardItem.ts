@@ -34,6 +34,7 @@ export class ClipboardItem extends St.Button {
 	private _protectTagged: boolean = true;
 	private _middleClickAction: MiddleClickAction = MiddleClickAction.None;
 	private _headerShown: boolean | null = null;
+	private _searchText: readonly string[] | null = null;
 
 	private readonly _box: St.Widget;
 	private readonly _header: ClipboardItemHeader;
@@ -121,6 +122,15 @@ export class ClipboardItem extends St.Button {
 		this.updateHeader();
 
 		// Connect signals
+		entry.connectObject(
+			'notify::content',
+			this.invalidateSearchText.bind(this),
+			'notify::metadata',
+			this.invalidateSearchText.bind(this),
+			'notify::title',
+			this.invalidateSearchText.bind(this),
+			this,
+		);
 		this.connect('notify::hover', () => this.notify('active'));
 		this.connect('style-changed', () => this.notify('active'));
 		this._header.connect('delete', () => this.forceDelete());
@@ -137,7 +147,20 @@ export class ClipboardItem extends St.Button {
 	}
 
 	public search(query: SearchQuery) {
-		this.visible = query.matchesEntry(this.visible, this.entry, this.entry.content);
+		this.visible = query.matchesEntry(this.visible, this.entry, ...this.searchText);
+	}
+
+	protected createSearchText(): readonly string[] {
+		return [this.entry.content];
+	}
+
+	protected invalidateSearchText(): void {
+		this._searchText = null;
+	}
+
+	private get searchText(): readonly string[] {
+		this._searchText ??= this.createSearchText();
+		return this._searchText;
 	}
 
 	private updateSize() {
@@ -312,6 +335,7 @@ export class ClipboardItem extends St.Button {
 
 	override destroy() {
 		this.ext.settings.disconnectObject(this);
+		this.entry.disconnectObject(this);
 
 		super.destroy();
 	}

@@ -132,6 +132,8 @@ export default class CopyousExtension extends Extension {
 	public clipboardManager: ClipboardManager | undefined;
 
 	private _enableDeferredId: number = 0;
+	private _preWarmIdleId: number = 0;
+	private _entryTrackerInitSerial: number = 0;
 	private _enabled: boolean = false;
 
 	override enable() {
@@ -368,17 +370,30 @@ export default class CopyousExtension extends Extension {
 	private async initEntryTracker() {
 		if (!this.entryTracker || !this.entryTracker.shouldInit) return;
 
+		const serial = ++this._entryTrackerInitSerial;
+		this.cancelPreWarm();
+
 		this.clipboardDialog?.clearEntries();
 		const entries = await this.entryTracker.init();
+		if (!this._enabled || serial !== this._entryTrackerInitSerial) return;
+
 		this.clipboardDialog?.loadEntries(entries);
 
 		// Pre-warm allocation: ask for the preferred size at low priority so the
 		// first user-triggered open() does not pay the cost of laying out the
 		// scroll container from scratch.
-		GLib.idle_add(GLib.PRIORITY_LOW, () => {
+		this._preWarmIdleId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+			this._preWarmIdleId = 0;
 			this.clipboardDialog?.preWarm();
 			return GLib.SOURCE_REMOVE;
 		});
+	}
+
+	private cancelPreWarm() {
+		if (this._preWarmIdleId) {
+			GLib.source_remove(this._preWarmIdleId);
+			this._preWarmIdleId = 0;
+		}
 	}
 
 	private async initHistoryTimeout() {
@@ -403,6 +418,8 @@ export default class CopyousExtension extends Extension {
 
 	override disable() {
 		this._enabled = false;
+		this._entryTrackerInitSerial++;
+		this.cancelPreWarm();
 
 		// Cancel deferred enable if it has not run yet
 		if (this._enableDeferredId) {

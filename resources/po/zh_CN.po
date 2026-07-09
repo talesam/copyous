@@ -8,7 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Copyous\n"
 "Report-Msgid-Bugs-To: \n"
+<<<<<<< Updated upstream
 "POT-Creation-Date: 2026-04-26 12:23-0500\n"
+=======
+"POT-Creation-Date: 2026-07-09 00:11-0300\n"
+>>>>>>> Stashed changes
 "PO-Revision-Date: 2025-12-19 18:30+0800\n"
 "Last-Translator: everyx <lunt.luo@gmail.com>\n"
 "Language-Team: Chinese (China)\n"
@@ -125,8 +129,8 @@ msgstr "已复制颜色"
 #: src/lib/preferences/general/feedbackSettings.ts:259
 #: src/lib/preferences/general/feedbackSettings.ts:308
 #: src/lib/preferences/shortcuts/itemShortcuts.ts:39
-#: src/lib/ui/components/editDialog.ts:217
-#: src/lib/ui/components/editDialog.ts:244
+#: src/lib/ui/components/editDialog.ts:225
+#: src/lib/ui/components/editDialog.ts:252
 msgid "None"
 msgstr "无"
 
@@ -155,7 +159,7 @@ msgstr "代码"
 #: src/lib/preferences/actions/actionDialog.ts:177
 #: src/lib/preferences/actions/actionDialog.ts:370
 #: src/lib/preferences/customization/items/fileItemCustomization.ts:79
-#: src/lib/ui/items/imageItem.ts:38
+#: src/lib/ui/items/imageItem.ts:37
 msgid "Image"
 msgstr "图片"
 
@@ -169,7 +173,7 @@ msgstr "文件"
 #: src/lib/preferences/actions/actionDefaults.ts:148
 #: src/lib/preferences/actions/actionDialog.ts:179
 #: src/lib/preferences/actions/actionDialog.ts:376
-#: src/lib/ui/items/filesItem.ts:140
+#: src/lib/ui/items/filesItem.ts:139
 msgid "Files"
 msgstr "多文件"
 
@@ -177,7 +181,7 @@ msgstr "多文件"
 #: src/lib/preferences/actions/actionDialog.ts:180
 #: src/lib/preferences/actions/actionDialog.ts:379
 #: src/lib/preferences/customization/items/linkItemCustomization.ts:45
-#: src/lib/ui/items/linkItem.ts:303
+#: src/lib/ui/items/linkItem.ts:304
 msgid "Link"
 msgstr "链接"
 
@@ -216,7 +220,7 @@ msgstr "选择哪些类型被允许"
 #: src/lib/preferences/dependencies/dependencies.ts:224
 #: src/lib/preferences/general/appExclusionSettings.ts:171
 #: src/lib/preferences/shortcuts/shortcutRow.ts:131
-#: src/lib/ui/components/editDialog.ts:306 src/lib/ui/indicator.ts:47
+#: src/lib/ui/components/editDialog.ts:314 src/lib/ui/indicator.ts:47
 msgid "Cancel"
 msgstr "取消"
 
@@ -344,7 +348,7 @@ msgid "Edit Action"
 msgstr "编辑动作"
 
 #: src/lib/preferences/actions/actionDialog.ts:662
-#: src/lib/ui/components/editDialog.ts:313
+#: src/lib/ui/components/editDialog.ts:321
 msgid "Save"
 msgstr "保存"
 
@@ -1465,7 +1469,7 @@ msgid ""
 msgstr "选择系统重启、注销或关机时对剪贴板历史记录的操作"
 
 #: src/lib/preferences/general/historySettings.ts:137
-#: src/lib/ui/clipboardDialog.ts:130 src/lib/ui/clipboardDialog.ts:235
+#: src/lib/ui/clipboardDialog.ts:134 src/lib/ui/clipboardDialog.ts:239
 #: src/lib/ui/indicator.ts:54
 msgid "Clear"
 msgstr "清除"
@@ -1473,6 +1477,10 @@ msgstr "清除"
 #: src/lib/preferences/general/historySettings.ts:137
 msgid "Keep All"
 msgstr "保留全部"
+
+#: src/lib/preferences/general/historySettings.ts:137
+msgid "Keep Pinned"
+msgstr ""
 
 #: src/lib/preferences/general/historySettings.ts:137
 msgid "Keep Pinned/Tagged"
@@ -1723,7 +1731,7 @@ msgstr "文件丢失"
 msgid "Error"
 msgstr "错误"
 
-#: src/lib/ui/components/editDialog.ts:269
+#: src/lib/ui/components/editDialog.ts:277
 msgid "Edit Clipboard Item"
 msgstr "编辑剪贴板项目"
 
@@ -1740,22 +1748,22 @@ msgid "Are you sure you want to clear your clipboard history?"
 msgstr "您确定要清除剪贴板历史记录吗？"
 
 #: src/lib/ui/indicator.ts:43
-msgid "Clear Pinned/Tagged Items"
-msgstr "清除已固定/已标记的项目"
+msgid "Clear Pinned Items"
+msgstr ""
 
-#: src/lib/ui/indicator.ts:102
+#: src/lib/ui/indicator.ts:99
 msgid "Incognito Mode"
 msgstr "隐私模式"
 
-#: src/lib/ui/indicator.ts:105
+#: src/lib/ui/indicator.ts:102
 msgid "Clear History"
 msgstr "清理历史"
 
-#: src/lib/ui/indicator.ts:106
+#: src/lib/ui/indicator.ts:103
 msgid "Settings"
 msgstr "设置"
 
-#: src/lib/ui/indicator.ts:199
+#: src/lib/ui/indicator.ts:196
 #, javascript-format
 msgid "%d File"
 msgid_plural "%d Files"
@@ -1765,13 +1773,13 @@ msgstr[0] "%d 个文件"
 msgid "Char"
 msgstr "字符"
 
-#: src/lib/ui/items/filesItem.ts:120
+#: src/lib/ui/items/filesItem.ts:119
 #, javascript-format
 msgid "%d more file"
 msgid_plural "%d more files"
 msgstr[0] "还有 %d 个文件"
 
-#: src/lib/ui/items/filesItem.ts:121
+#: src/lib/ui/items/filesItem.ts:120
 #, javascript-format
 msgid "%d file"
 msgid_plural "%d files"
@@ -1793,6 +1801,7 @@ msgstr "剪贴板是空的"
 msgid "No Items Found"
 msgstr "未找到项目"
 
+<<<<<<< Updated upstream
 #: src/lib/ui/searchEntry.ts:150
 msgid "__All"
 msgstr "全部(_A)"
@@ -1830,6 +1839,45 @@ msgid "Colo__r"
 msgstr "颜色(_R)"
 
 #: src/lib/ui/searchEntry.ts:273
+=======
+#: src/lib/ui/searchEntry.ts:154
+msgid "__All"
+msgstr "全部(_A)"
+
+#: src/lib/ui/searchEntry.ts:158
+msgid "__Text"
+msgstr "文本(_T)"
+
+#: src/lib/ui/searchEntry.ts:159
+msgid "__Code"
+msgstr "代码(_C)"
+
+#: src/lib/ui/searchEntry.ts:160
+msgid "__Image"
+msgstr "图片(_I)"
+
+#: src/lib/ui/searchEntry.ts:161
+msgid "__File"
+msgstr "文件(_F)"
+
+#: src/lib/ui/searchEntry.ts:162
+msgid "File__s"
+msgstr "文件(_S)"
+
+#: src/lib/ui/searchEntry.ts:163
+msgid "__Link"
+msgstr "链接(_L)"
+
+#: src/lib/ui/searchEntry.ts:164
+msgid "C__haracter"
+msgstr "字符(_H)"
+
+#: src/lib/ui/searchEntry.ts:165
+msgid "Colo__r"
+msgstr "颜色(_R)"
+
+#: src/lib/ui/searchEntry.ts:277
+>>>>>>> Stashed changes
 msgid "Type to search"
 msgstr "输入以搜索"
 

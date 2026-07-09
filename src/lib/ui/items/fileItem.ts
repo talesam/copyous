@@ -23,7 +23,6 @@ import {
 	getFileType,
 	tryCreateFilePreview,
 } from '../components/contentPreview.js';
-import { SearchQuery } from '../searchEntry.js';
 import { ClipboardItem } from './clipboardItem.js';
 
 export function formatFile(file: Gio.File): string {
@@ -45,6 +44,7 @@ export class FileItem extends ClipboardItem {
 	private _thumbnail?: Gio.File | null;
 	private _filePreview?: ContentPreview | null;
 	private _fileInfo?: ContentInfo;
+	private _previewIdleId: number = 0;
 
 	private readonly _cancellable: Gio.Cancellable = new Gio.Cancellable();
 
@@ -68,12 +68,16 @@ export class FileItem extends ClipboardItem {
 		// Bind properties
 		this.fileItemSettings.connectObject('changed', this.updateFilePreview.bind(this), this);
 		const logger = this.ext.logger;
-		this.updateFilePreview().catch(logger.error.bind(logger));
+		this._previewIdleId = GLib.idle_add(GLib.PRIORITY_LOW, () => {
+			this._previewIdleId = 0;
+			this.updateFilePreview().catch(logger.error.bind(logger));
+			return GLib.SOURCE_REMOVE;
+		});
 	}
 
-	public override search(query: SearchQuery): void {
+	protected override createSearchText(): readonly string[] {
 		const file = this.entry.content.substring('file://'.length);
-		this.visible = query.matchesEntry(this.visible, this.entry, file, this._file.text);
+		return [file, this._file.text];
 	}
 
 	private async updateFilePreview() {
@@ -208,6 +212,10 @@ export class FileItem extends ClipboardItem {
 
 	override destroy() {
 		this.fileItemSettings.disconnectObject(this);
+		if (this._previewIdleId) {
+			GLib.source_remove(this._previewIdleId);
+			this._previewIdleId = 0;
+		}
 		this._cancellable.cancel();
 
 		super.destroy();

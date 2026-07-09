@@ -228,9 +228,10 @@ export class ClipboardEntryTracker {
 
 		const now = GLib.DateTime.new_now_utc();
 		const olderThan = now.add_minutes(-M)!;
+		const protectTagged = this.ext.settings.get_enum('clipboard-history') === ClipboardHistory.KeepPinnedAndTagged;
 
 		for (const entry of this._entries.values()) {
-			if (entry.pinned || entry.tag) continue;
+			if (entry.pinned || (protectTagged && entry.tag)) continue;
 			if (entry.datetime.compare(olderThan) < 0) return true;
 		}
 
@@ -240,7 +241,8 @@ export class ClipboardEntryTracker {
 	public async deleteOldest() {
 		const N = this.ext.settings.get_int('history-length');
 		const M = this.ext.settings.get_int('history-time');
-		const deleted = await this._database?.deleteOldest(N, M);
+		const protectTagged = this.ext.settings.get_enum('clipboard-history') === ClipboardHistory.KeepPinnedAndTagged;
+		const deleted = await this._database?.deleteOldest(N, M, protectTagged);
 		if (deleted) deleted.forEach((id) => this.deleteFromDatabase(id));
 	}
 

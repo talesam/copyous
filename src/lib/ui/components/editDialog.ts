@@ -94,13 +94,17 @@ export class MultilineEntry extends St.Entry {
 			style_class: 'multiline-scrollview',
 			hscrollbar_policy: St.PolicyType.NEVER,
 			vscrollbar_policy: St.PolicyType.AUTOMATIC,
+			x_align: Clutter.ActorAlign.FILL,
+			y_align: Clutter.ActorAlign.FILL,
 			x_expand: true,
+			y_expand: true,
 			clip_to_allocation: true,
 		});
 		this.add_child(scrollView);
 
 		const box = new St.BoxLayout({
 			style_class: 'multiline-box',
+			orientation: Clutter.Orientation.VERTICAL,
 			x_align: Clutter.ActorAlign.FILL,
 			y_align: Clutter.ActorAlign.FILL,
 			x_expand: true,
@@ -114,6 +118,10 @@ export class MultilineEntry extends St.Entry {
 		text.activatable = false;
 		text.line_wrap = true;
 		text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
+		text.x_align = Clutter.ActorAlign.FILL;
+		text.y_align = Clutter.ActorAlign.START;
+		text.x_expand = true;
+		text.y_expand = true;
 
 		// Always keep the cursor visible
 		text.connect('cursor-changed', () => {
@@ -290,12 +298,13 @@ export class EditDialog extends ModalDialog.ModalDialog {
 		this._entry = new MultilineEntry({
 			style_class: 'clipboard-item-edit-dialog-entry',
 			can_focus: true,
+			x_expand: true,
 		});
 		content.add_child(this._entry);
 		this.setInitialKeyFocus(this._entry);
 
-		this._entry.clutterText.text = entry.content;
-		this._entry.clutterText.set_selection(0, 0);
+		this._entry.clutter_text.text = entry.content;
+		this._entry.clutter_text.set_selection(-1, -1);
 
 		if (entry.type === ItemType.Code) {
 			this._entry.add_style_class_name('monospace');
@@ -312,7 +321,7 @@ export class EditDialog extends ModalDialog.ModalDialog {
 		this.addButton({
 			label: _('Save'),
 			action: () => {
-				entry.content = this._entry.clutterText.text;
+				entry.content = this._entry.clutter_text.text;
 				if (this._languageButton) entry.metadata = { language: this._languageButton.language };
 				this.close();
 			},
@@ -320,6 +329,9 @@ export class EditDialog extends ModalDialog.ModalDialog {
 	}
 
 	on_opened() {
-		this._entry.clutterText.queue_relayout();
+		this._entry.clutter_text.grab_key_focus();
+		this._entry.clutter_text.set_selection(-1, -1);
+		this._entry.clutter_text.queue_relayout();
+		this._entry.clutter_text.queue_redraw();
 	}
 }

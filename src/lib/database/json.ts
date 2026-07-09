@@ -105,8 +105,12 @@ export class JsonDatabase extends MemoryDatabase {
 		return deleted;
 	}
 
-	public override async deleteOldest(offset: number, olderThanMinutes: number): Promise<number[]> {
-		const deleted = await super.deleteOldest(offset, olderThanMinutes);
+	public override async deleteOldest(
+		offset: number,
+		olderThanMinutes: number,
+		protectTagged: boolean,
+	): Promise<number[]> {
+		const deleted = await super.deleteOldest(offset, olderThanMinutes, protectTagged);
 		if (deleted.length > 0) this.save();
 		return deleted;
 	}

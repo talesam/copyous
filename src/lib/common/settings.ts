@@ -264,6 +264,7 @@ export const ClipboardHistory = {
 	Clear: 0,
 	KeepPinnedAndTagged: 1,
 	KeepAll: 2,
+	KeepPinned: 3,
 } as const;
 
 export type ClipboardHistory = (typeof ClipboardHistory)[keyof typeof ClipboardHistory];

@@ -1,4 +1,5 @@
 import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import Graphene from 'gi://Graphene';
@@ -24,6 +25,7 @@ import { ClipboardScrollView } from './clipboardScrollView.js';
 import { ClipboardItemMenu } from './components/clipboardItemMenu.js';
 import { ConfirmClearHistoryDialog } from './indicator.js';
 import { CharacterItem } from './items/characterItem.js';
+import type { ClipboardItem } from './items/clipboardItem.js';
 import { CodeItem } from './items/codeItem.js';
 import { ColorItem } from './items/colorItem.js';
 import { FileItem } from './items/fileItem.js';
@@ -35,6 +37,8 @@ import { CenterBox, CollapsibleHeaderLayout, FitConstraint } from './layout.js';
 import { SearchEntry, SearchQuery } from './searchEntry.js';
 
 const ANIMATION_TIME = 100;
+const INITIAL_LOAD_ITEMS = 24;
+const LOAD_BATCH_ITEMS = 24;
 
 @registerClass()
 class IncognitoButton extends St.Button {
@@ -258,6 +262,8 @@ export class ClipboardDialog extends St.Widget {
 	private _updateCursor: boolean = true;
 	private _nextCursor: [number, number] | null = null;
 	private _cursor: [number, number] | null = null;
+	private _loadIdleId: number = 0;
+	private _loadGeneration: number = 0;
 
 	private _orientation: Clutter.Orientation = Clutter.Orientation.HORIZONTAL;
 	private _layoutDirty: boolean = true;
@@ -405,9 +411,15 @@ export class ClipboardDialog extends St.Widget {
 	}
 
 	override destroy() {
+		this.cancelPendingLoad();
 		(Main.inputMethod as Clutter.InputMethod).disconnectObject(this);
 		this._ibusManager.disconnectObject(this);
 		this.ext.settings.disconnectObject(this);
+
+		if (this._grab) {
+			this._dialog.remove_all_transitions();
+			this.finishClose();
+		}
 
 		super.destroy();
 	}
@@ -427,11 +439,14 @@ export class ClipboardDialog extends St.Widget {
 	}
 
 	public preWarm() {
+		if (this.opened || !this.get_parent()) return;
+
 		// Force one layout pass while still hidden so first open() is snappier.
 		// Reading get_preferred_size triggers Clutter's allocation cycle, which
 		// caches style nodes and child measurements.
 		this.applyLayoutIfDirty();
 		this._dialog.get_preferred_size();
+		this._scrollView.preWarm();
 	}
 
 	public open() {
@@ -543,13 +558,28 @@ export class ClipboardDialog extends St.Widget {
 			...easeArgs,
 			duration: ANIMATION_TIME,
 			mode,
+<<<<<<< Updated upstream
 			onComplete: () => {
 				Main.popModal(this._grab);
 				this._grab = null;
 				this.hide();
 				global.compositor.enable_unredirect();
 			},
+=======
+			onComplete: () => this.finishClose(),
+>>>>>>> Stashed changes
 		});
+	}
+
+	private finishClose() {
+		if (this._grab) {
+			Main.popModal(this._grab);
+			this._grab = null;
+		}
+
+		this._closing = false;
+		this.hide();
+		global.compositor.enable_unredirect();
 	}
 
 	public addEntry(entry: ClipboardEntry): void {
@@ -559,8 +589,12 @@ export class ClipboardDialog extends St.Widget {
 	}
 
 	public loadEntries(entries: ClipboardEntry[]): void {
+		this.cancelPendingLoad();
+		const generation = ++this._loadGeneration;
+		const initialEntries = entries.slice(0, INITIAL_LOAD_ITEMS);
+
 		const items = [];
-		for (const entry of entries) {
+		for (const entry of initialEntries) {
 			const item = this.createItem(entry);
 			if (item) items.push(item);
 		}
@@ -568,9 +602,39 @@ export class ClipboardDialog extends St.Widget {
 
 		// Apply initial search filter for exclude-pinned / exclude-tagged once after bulk load.
 		this._scrollView.search(this._header.searchEntry.searchQuery);
+
+		let index = initialEntries.length;
+		if (index >= entries.length) return;
+
+		this._loadIdleId = GLib.idle_add(GLib.PRIORITY_LOW, () => {
+			if (generation !== this._loadGeneration || !this.get_parent()) {
+				this._loadIdleId = 0;
+				return GLib.SOURCE_REMOVE;
+			}
+
+			const batch: ClipboardItem[] = [];
+			for (let end = Math.min(index + LOAD_BATCH_ITEMS, entries.length); index < end; index++) {
+				const item = this.createItem(entries[index]!);
+				if (item) batch.push(item);
+			}
+
+			this._scrollView.appendItems(batch);
+			if (index < entries.length) return GLib.SOURCE_CONTINUE;
+
+			this._loadIdleId = 0;
+			return GLib.SOURCE_REMOVE;
+		});
 	}
 
-	private createItem(entry: ClipboardEntry) {
+	private cancelPendingLoad() {
+		this._loadGeneration++;
+		if (this._loadIdleId) {
+			GLib.source_remove(this._loadIdleId);
+			this._loadIdleId = 0;
+		}
+	}
+
+	private createItem(entry: ClipboardEntry): ClipboardItem | null {
 		let item;
 		try {
 			item = (() => {
@@ -673,6 +737,7 @@ export class ClipboardDialog extends St.Widget {
 	}
 
 	public clearEntries() {
+		this.cancelPendingLoad();
 		this._scrollView.clearItems();
 	}
 

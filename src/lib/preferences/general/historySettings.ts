@@ -134,7 +134,7 @@ export class HistorySettings extends Adw.PreferencesGroup {
 			subtitle: _(
 				'Choose what to do with your clipboard history when you restart, log out, or shut down your system',
 			),
-			model: Gtk.StringList.new([_('Clear'), _('Keep Pinned/Tagged'), _('Keep All')]),
+			model: Gtk.StringList.new([_('Clear'), _('Keep Pinned/Tagged'), _('Keep All'), _('Keep Pinned')]),
 			sensitive: false,
 		});
 		this.add(this._clipboardHistory);
