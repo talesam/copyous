@@ -150,7 +150,7 @@ $(DIST_DIR)/css/template-%.css: \
 		resources/css/template.scss scripts/template/postcss.config.cjs \
 		resources/css/themes/default/_*.scss resources/css/themes/default/widgets | $(DIST_DIR)
 	@mkdir -p $(DIST_DIR)/css
-	VARIANT=$* pnpm exec postcss $< --config scripts/template | pnpm exec sass --no-source-map --stdin $@
+	VARIANT=$* ./node_modules/.bin/postcss $< --config scripts/template | ./node_modules/.bin/sass --no-source-map --stdin $@
 
 CSS := $(THEME_CSS) $(DIST_DIR)/css/template-dark.css $(DIST_DIR)/css/template-light.css
 
