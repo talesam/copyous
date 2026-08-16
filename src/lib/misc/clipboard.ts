@@ -1,6 +1,7 @@
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
+import GdkPixbuf from 'gi://GdkPixbuf';
 import Gio from 'gi://Gio';
 import Meta from 'gi://Meta';
 import St from 'gi://St';
@@ -9,7 +10,7 @@ import type CopyousExtension from '../../extension.js';
 import { Color } from '../common/color.js';
 import { ItemType, getImagesPath } from '../common/constants.js';
 import { registerClass } from '../common/gjs.js';
-import { ClipboardEntry, FileOperation, Metadata } from '../database/database.js';
+import { ClipboardEntry, FileOperation, ImageMetadata, Metadata } from '../database/database.js';
 import { ClipboardEntryTracker } from '../database/entryTracker.js';
 import { Keyboard } from './keyboard.js';
 
@@ -17,6 +18,10 @@ Gio._promisify(Gio.File.prototype, 'load_contents_async');
 Gio._promisify(Gio.File.prototype, 'replace_contents_async');
 Gio._promisify(Gio.MemoryOutputStream.prototype, 'splice_async');
 Gio._promisify(Meta.SelectionSource.prototype, 'read_async');
+
+const Utf8Decoder = new TextDecoder();
+const Utf8Encoder = new TextEncoder();
+const GraphemeSegmenter = new Intl.Segmenter();
 
 const MimeTypes = {
 	Text: ['text/plain;charset=utf-8', 'UTF8_STRING', 'text/plain', 'STRING'],
@@ -49,6 +54,12 @@ function contentChecksum(content: ClipboardContent): string | null {
 			return GLib.compute_checksum_for_string(GLib.ChecksumType.MD5, s, s.length);
 		}
 	}
+}
+
+function hasMoreGraphemes(text: string, max: number): boolean {
+	const iterator = GraphemeSegmenter.segment(text)[Symbol.iterator]();
+	for (let i = 0; i < max; i++) iterator.next();
+	return iterator.next().value !== undefined;
 }
 
 @registerClass({
@@ -118,7 +129,7 @@ export class ClipboardManager extends GObject.Object {
 		// File
 		if (content.type === ContentType.File) {
 			const s = `${FileOperation.Copy}\n${content.paths.join('\n')}`;
-			const bytes = new TextEncoder().encode(s);
+			const bytes = Utf8Encoder.encode(s);
 			this.clipboard.set_content(St.ClipboardType.CLIPBOARD, MimeTypes.File[0], bytes);
 			return;
 		}
@@ -210,9 +221,8 @@ export class ClipboardManager extends GObject.Object {
 		}
 	}
 
-	private shouldSave(selectionSource: Meta.SelectionSource): boolean {
+	private shouldSave(mimeTypes: readonly string[]): boolean {
 		// Mime Type
-		const mimeTypes = selectionSource.get_mimetypes();
 		if (MimeTypes.Sensitive.some((value) => mimeTypes.includes(value))) {
 			return false;
 		}
@@ -236,7 +246,8 @@ export class ClipboardManager extends GObject.Object {
 			if (selectionSource === null) return;
 			if (selectionType !== Meta.SelectionType.SELECTION_CLIPBOARD) return;
 
-			const content = await this.getContent(selectionSource);
+			const mimeTypes = selectionSource.get_mimetypes();
+			const content = await this.getContent(selectionSource, mimeTypes);
 			if (!content) return;
 
 			const checksum = contentChecksum(content);
@@ -261,7 +272,7 @@ export class ClipboardManager extends GObject.Object {
 			// Check if history should be saved after setting the previous clipboard item.
 			// This ensures that content copied in incognito mode is not saved to history
 			// after copying an item after exiting incognito mode.
-			if (!this.shouldSave(selectionSource)) return;
+			if (!this.shouldSave(mimeTypes)) return;
 
 			const res = await this.convertContent(content);
 			if (!res) return;
@@ -276,7 +287,10 @@ export class ClipboardManager extends GObject.Object {
 		}
 	}
 
-	private async getContent(selectionSource: Meta.SelectionSource): Promise<ClipboardContent | null> {
+	private async getContent(
+		selectionSource: Meta.SelectionSource,
+		mimeTypes: readonly string[],
+	): Promise<ClipboardContent | null> {
 		async function getBytes(mimeType: string): Promise<Uint8Array<ArrayBufferLike>> {
 			const source = await selectionSource.read_async(mimeType, null);
 			const out = Gio.MemoryOutputStream.new_resizable();
@@ -288,8 +302,6 @@ export class ClipboardManager extends GObject.Object {
 			);
 			return out.steal_as_bytes().toArray();
 		}
-
-		const mimeTypes = selectionSource.get_mimetypes();
 
 		// Image
 		const imageMimeType = MimeTypes.Image.find((value) => mimeTypes.includes(value));
@@ -308,7 +320,7 @@ export class ClipboardManager extends GObject.Object {
 		const fileMimeType = MimeTypes.File.find((value) => mimeTypes.includes(value));
 		if (fileMimeType) {
 			const bytes = await getBytes(fileMimeType);
-			const text = new TextDecoder().decode(bytes).trim();
+			const text = Utf8Decoder.decode(bytes).trim();
 			if (text) {
 				const files = text
 					.split('\n')
@@ -329,7 +341,7 @@ export class ClipboardManager extends GObject.Object {
 		const textMimeType = MimeTypes.Text.find((value) => mimeTypes.includes(value));
 		if (textMimeType) {
 			const bytes = await getBytes(textMimeType);
-			const text = new TextDecoder().decode(bytes);
+			const text = Utf8Decoder.decode(bytes);
 			if (text && text.trim()) {
 				return { type: ContentType.Text, text };
 			} else {
@@ -354,10 +366,8 @@ export class ClipboardManager extends GObject.Object {
 			}
 
 			// Character
-			const iterator = new Intl.Segmenter().segment(trimmed)[Symbol.iterator]();
 			const maxCharacters = this.ext.settings.get_child('character-item').get_int('max-characters');
-			for (let i = 0; i < maxCharacters; i++) iterator.next();
-			if (!iterator.next().value) {
+			if (!hasMoreGraphemes(trimmed, maxCharacters)) {
 				return [ItemType.Character, content.text, null];
 			}
 
@@ -402,7 +412,15 @@ export class ClipboardManager extends GObject.Object {
 					);
 				}
 
-				return [ItemType.Image, image.get_uri(), null];
+				let metadata: ImageMetadata | null = null;
+				try {
+					const [, width, height] = GdkPixbuf.Pixbuf.get_file_info(image.get_path()!);
+					if (width > 0 && height > 0) metadata = { width, height };
+				} catch {
+					// Keep image without dimensions.
+				}
+
+				return [ItemType.Image, image.get_uri(), metadata];
 			} catch {
 				return null;
 			}

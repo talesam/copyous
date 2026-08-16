@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Copyous\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-09 00:47-0300\n"
+"POT-Creation-Date: 2026-08-16 16:01-0300\n"
 "PO-Revision-Date: 2025-12-01 18:02-0300\n"
 "Last-Translator: Murilo Leal <murilormleal@outlook.com>\n"
 "Language-Team: Portuguese (Brazil)\n"
@@ -83,39 +83,39 @@ msgstr "Desativar aviso"
 msgid "Failed to load JSON"
 msgstr ""
 
-#: src/lib/misc/notifications.ts:63 src/lib/misc/notifications.ts:114
+#: src/lib/misc/notifications.ts:63 src/lib/misc/notifications.ts:125
 msgid "Copied Text"
 msgstr "Texto copiado"
 
-#: src/lib/misc/notifications.ts:98 src/lib/misc/notifications.ts:123
+#: src/lib/misc/notifications.ts:109 src/lib/misc/notifications.ts:134
 msgid "Copied Image"
 msgstr "Imagem copiada"
 
-#: src/lib/misc/notifications.ts:99 src/lib/misc/notifications.ts:129
+#: src/lib/misc/notifications.ts:110 src/lib/misc/notifications.ts:140
 #, javascript-format
 msgid "Size: %d×%d px"
 msgstr "Tamanho: %d×%d px"
 
-#: src/lib/misc/notifications.ts:118
+#: src/lib/misc/notifications.ts:129
 msgid "Copied Code"
 msgstr "Código copiado"
 
-#: src/lib/misc/notifications.ts:142
+#: src/lib/misc/notifications.ts:153
 #, javascript-format
 msgid "Copied %d File"
 msgid_plural "Copied %d Files"
 msgstr[0] "Arquivo %d copiado"
 msgstr[1] "Arquivos %d copiados"
 
-#: src/lib/misc/notifications.ts:148
+#: src/lib/misc/notifications.ts:159
 msgid "Copied Link"
 msgstr "Link copiado"
 
-#: src/lib/misc/notifications.ts:152
+#: src/lib/misc/notifications.ts:163
 msgid "Copied Character"
 msgstr "Caractere copiado"
 
-#: src/lib/misc/notifications.ts:156
+#: src/lib/misc/notifications.ts:167
 msgid "Copied Color"
 msgstr "Cor copiada"
 
@@ -1713,47 +1713,47 @@ msgstr "Desativar Atalho"
 msgid "Disabled"
 msgstr "Desabilitado"
 
-#: src/lib/ui/components/contentInfo.ts:32
+#: src/lib/ui/components/contentInfo.ts:35
 #, javascript-format
 msgid "%dh"
 msgstr "%dh"
 
-#: src/lib/ui/components/contentInfo.ts:33
+#: src/lib/ui/components/contentInfo.ts:36
 #, javascript-format
 msgid "%dm"
 msgstr "%dm"
 
-#: src/lib/ui/components/contentInfo.ts:34
+#: src/lib/ui/components/contentInfo.ts:37
 #, javascript-format
 msgid "%ds"
 msgstr "%ds"
 
-#: src/lib/ui/components/contentInfo.ts:106
+#: src/lib/ui/components/contentInfo.ts:116
 #, javascript-format
 msgid "%d char"
 msgid_plural "%d chars"
 msgstr[0] "%d caractere"
 msgstr[1] "%d caracteres"
 
-#: src/lib/ui/components/contentInfo.ts:114
+#: src/lib/ui/components/contentInfo.ts:123
 #, javascript-format
 msgid "%d word"
 msgid_plural "%d words"
 msgstr[0] "%d palavra"
 msgstr[1] "%d palavras"
 
-#: src/lib/ui/components/contentInfo.ts:117
+#: src/lib/ui/components/contentInfo.ts:126
 #, javascript-format
 msgid "%d line"
 msgid_plural "%d lines"
 msgstr[0] "%d linha"
 msgstr[1] "%d linhas"
 
-#: src/lib/ui/components/contentInfo.ts:177
+#: src/lib/ui/components/contentInfo.ts:186
 msgid "Missing File"
 msgstr "Arquivo faltando"
 
-#: src/lib/ui/components/contentInfo.ts:189
+#: src/lib/ui/components/contentInfo.ts:198
 msgid "Error"
 msgstr "Erro"
 

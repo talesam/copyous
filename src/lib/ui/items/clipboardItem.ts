@@ -150,6 +150,8 @@ export class ClipboardItem extends St.Button {
 		this.visible = query.matchesEntry(this.visible, this.entry, ...this.searchText);
 	}
 
+	public loadPreview(): void {}
+
 	protected createSearchText(): readonly string[] {
 		return [this.entry.content];
 	}

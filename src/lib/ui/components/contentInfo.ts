@@ -12,7 +12,10 @@ import type CopyousExtension from '../../../extension.js';
 import { enumParamSpec, registerClass } from '../../common/gjs.js';
 import { Icon, loadIcon } from '../../common/icons.js';
 import { TextCountMode } from '../../common/settings.js';
-import { FileType } from './contentPreview.js';
+import { FileType, ImageDimensions } from './contentPreview.js';
+
+const GraphemeSegmenter = new Intl.Segmenter(undefined, { granularity: 'grapheme' });
+const WordSegmenter = new Intl.Segmenter(undefined, { granularity: 'word' });
 
 function formatBytes(bytes: number): [string, string] {
 	const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
@@ -34,6 +37,14 @@ function formatTime(seconds: number): string {
 	res += _('%ds').format(s);
 
 	return res;
+}
+
+function countLines(text: string): number {
+	let count = 1;
+	for (let i = 0; i < text.length; i++) {
+		if (text[i] === '\n') count++;
+	}
+	return count;
 }
 
 @registerClass()
@@ -100,20 +111,18 @@ export class TextInfo extends ContentInfo {
 	private updateCount() {
 		if (this._textCountMode === TextCountMode.Characters) {
 			let count = 0;
-			const segments = new Intl.Segmenter(undefined, { granularity: 'grapheme' }).segment(this._text);
-			for (const _segment of segments) count++;
+			for (const _segment of GraphemeSegmenter.segment(this._text)) count++;
 
 			this._countLabel.text = ngettext('%d char', '%d chars', count).format(count);
 		} else if (this._textCountMode === TextCountMode.Words) {
 			let count = 0;
-			const segments = new Intl.Segmenter(undefined, { granularity: 'word' }).segment(this._text);
-			for (const segment of segments) {
+			for (const segment of WordSegmenter.segment(this._text)) {
 				if (segment.isWordLike) count++;
 			}
 
 			this._countLabel.text = ngettext('%d word', '%d words', count).format(count);
 		} else if (this._textCountMode === TextCountMode.Lines) {
-			const count = this._text.split('\n').length;
+			const count = countLines(this._text);
 			this._countLabel.text = ngettext('%d line', '%d lines', count).format(count);
 		}
 	}
@@ -329,6 +338,7 @@ export async function createFileInfo(
 	file: Gio.File,
 	fileType: FileType,
 	cancellable: Gio.Cancellable,
+	imageDimensions?: ImageDimensions | null,
 ): Promise<FileInfo> {
 	try {
 		if (!file.query_exists(null)) {
@@ -349,7 +359,9 @@ export async function createFileInfo(
 				fileInfo = await tryCreateDirectoryFileInfo(ext, file);
 				break;
 			case FileType.Image:
-				fileInfo = tryCreateImageInfo(file, size);
+				fileInfo = imageDimensions
+					? new ImageInfo(size, imageDimensions.width, imageDimensions.height)
+					: tryCreateImageInfo(file, size);
 				break;
 			case FileType.Audio:
 			case FileType.Video:

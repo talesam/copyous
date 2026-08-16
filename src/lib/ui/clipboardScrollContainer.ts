@@ -122,11 +122,6 @@ export class ClipboardScrollContainer extends St.BoxLayout {
 
 	public addItem(item: ClipboardItem): void {
 		this.insertOrMoveItem(item);
-
-		if (this._lastQuery) {
-			item.search(this._lastQuery);
-		}
-
 		this.connectItemSignals(item);
 	}
 
@@ -165,16 +160,21 @@ export class ClipboardScrollContainer extends St.BoxLayout {
 		this._connectedItems.add(item);
 
 		// Move item when datetime changes
-		item.entry.connect('notify::datetime', () => this.insertOrMoveItem(item));
+		item.entry.connect('notify::datetime', () => this.insertOrMoveItem(item, false));
 
 		// Delete item when deleted
 		item.entry.connect('delete', () => this.removeItem(item));
 
-		// Update search when entry changes
-		item.entry.connect('notify', () => this.updateSearch(item));
+		// Update search only when a searchable property changes.
+		item.entry.connect('notify::content', () => this.updateSearch(item));
+		item.entry.connect('notify::pinned', () => this.updateSearch(item));
+		item.entry.connect('notify::tag', () => this.updateSearch(item));
+		item.entry.connect('notify::type', () => this.updateSearch(item));
+		item.entry.connect('notify::metadata', () => this.updateSearch(item));
+		item.entry.connect('notify::title', () => this.updateSearch(item));
 	}
 
-	private insertOrMoveItem(item: ClipboardItem): void {
+	private insertOrMoveItem(item: ClipboardItem, search: boolean = true): void {
 		this.removePseudoclasses();
 
 		if (item.get_parent() === this) this.remove_child(item);
@@ -192,8 +192,11 @@ export class ClipboardScrollContainer extends St.BoxLayout {
 			this.add_child(item);
 		}
 
-		this.updateSearch(item);
-		this.updateVisible();
+		if (search && this._lastQuery) {
+			this.updateSearch(item);
+		} else {
+			this.updateVisible();
+		}
 	}
 
 	public clearItems(): void {
@@ -322,6 +325,17 @@ export class ClipboardScrollContainer extends St.BoxLayout {
 
 			child.get_preferred_size();
 			if (++n >= maxItems) return;
+		}
+	}
+
+	public loadPreviews(start: number, end: number): void {
+		for (const child of this.get_children()) {
+			if (!(child instanceof ClipboardItem) || !child.visible) continue;
+
+			const box = child.get_allocation_box();
+			const itemStart = this.orientation === Clutter.Orientation.HORIZONTAL ? box.x1 : box.y1;
+			const itemEnd = this.orientation === Clutter.Orientation.HORIZONTAL ? box.x2 : box.y2;
+			if (itemEnd >= start && itemStart <= end) child.loadPreview();
 		}
 	}
 

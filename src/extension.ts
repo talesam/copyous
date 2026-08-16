@@ -280,6 +280,12 @@ export default class CopyousExtension extends Extension {
 		if (this.hljs || !M) return;
 
 		const hljsPath = M.getHljsPath(this);
+		if (!hljsPath.query_exists(null)) {
+			this.hljs = null;
+			this.monitorHljs(hljsPath);
+			return;
+		}
+
 		try {
 			const hljs = (await import(hljsPath.get_uri())) as { default: HLJSApi };
 			this.hljs = hljs.default;
@@ -296,20 +302,33 @@ export default class CopyousExtension extends Extension {
 			this.hljsCallbacks = undefined;
 		} catch {
 			this.hljs = null;
+			this.monitorHljs(hljsPath);
+		}
+	}
 
-			// Automatically load highlight.js
-			if (!this.hljsMonitor) {
-				this.hljsMonitor = hljsPath.monitor(M.Gio.FileMonitorFlags.NONE, null);
-				this.hljsMonitor.connectObject(
-					'changed',
-					async (_monitor: unknown, _file: unknown, _otherFile: unknown, eventType: Gio.FileMonitorEvent) => {
-						if (eventType === M!.Gio.FileMonitorEvent.CHANGES_DONE_HINT) {
-							await this.initHljs();
-						}
-					},
-					this,
-				);
-			}
+	private monitorHljs(hljsPath: Gio.File) {
+		if (this.hljsMonitor || !M) return;
+
+		try {
+			const parent = hljsPath.get_parent();
+			if (parent && !parent.query_exists(null)) parent.make_directory_with_parents(null);
+
+			this.hljsMonitor = hljsPath.monitor(M.Gio.FileMonitorFlags.NONE, null);
+			this.hljsMonitor.connectObject(
+				'changed',
+				async (_monitor: unknown, _file: unknown, _otherFile: unknown, eventType: Gio.FileMonitorEvent) => {
+					if (
+						eventType === M!.Gio.FileMonitorEvent.CHANGES_DONE_HINT ||
+						eventType === M!.Gio.FileMonitorEvent.CREATED ||
+						eventType === M!.Gio.FileMonitorEvent.MOVED_IN
+					) {
+						await this.initHljs();
+					}
+				},
+				this,
+			);
+		} catch (error) {
+			this.logger.warn(`Failed to monitor Highlight.js: ${String(error)}`);
 		}
 	}
 
@@ -319,6 +338,7 @@ export default class CopyousExtension extends Extension {
 
 		if (!this.hljsMonitor) {
 			const path = M.getDataPath(this).get_child('languages');
+			if (!path.query_exists(null)) path.make_directory_with_parents(null);
 			this.hljsMonitor = path.monitor_directory(M.Gio.FileMonitorFlags.NONE, null);
 			this.hljsMonitor.connectObject(
 				'changed',

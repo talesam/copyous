@@ -37,8 +37,8 @@ import { CenterBox, CollapsibleHeaderLayout, FitConstraint } from './layout.js';
 import { SearchEntry, SearchQuery } from './searchEntry.js';
 
 const ANIMATION_TIME = 100;
-const INITIAL_LOAD_ITEMS = 24;
-const LOAD_BATCH_ITEMS = 24;
+const INITIAL_LOAD_ITEMS = 4;
+const LOAD_BATCH_ITEMS = 12;
 
 @registerClass()
 class IncognitoButton extends St.Button {
@@ -611,7 +611,7 @@ export class ClipboardDialog extends St.Widget {
 
 			const batch: ClipboardItem[] = [];
 			for (let end = Math.min(index + LOAD_BATCH_ITEMS, entries.length); index < end; index++) {
-				const item = this.createItem(entries[index]!);
+				const item = this.createItem(entries[index]!, false);
 				if (item) batch.push(item);
 			}
 
@@ -631,7 +631,7 @@ export class ClipboardDialog extends St.Widget {
 		}
 	}
 
-	private createItem(entry: ClipboardEntry): ClipboardItem | null {
+	private createItem(entry: ClipboardEntry, loadImagePreview: boolean = true): ClipboardItem | null {
 		let item;
 		try {
 			item = (() => {
@@ -641,7 +641,7 @@ export class ClipboardDialog extends St.Widget {
 					case ItemType.Code:
 						return new CodeItem(this.ext, entry);
 					case ItemType.Image:
-						return new ImageItem(this.ext, entry);
+						return new ImageItem(this.ext, entry, loadImagePreview);
 					case ItemType.File:
 						return new FileItem(this.ext, entry);
 					case ItemType.Files:

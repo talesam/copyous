@@ -69,13 +69,24 @@ export class NotificationManager extends GObject.Object {
 	}
 
 	private createImageContent(pixbuf: GdkPixbuf.Pixbuf): St.ImageContent {
+		// Cogl must not read RGB rows as RGBA. That can overrun the pixbuf
+		// buffer and crash GNOME Shell in native memcpy code.
+		const iconPixbuf = pixbuf.get_has_alpha() ? pixbuf : pixbuf.add_alpha(false, 0, 0, 0);
+		if (!iconPixbuf) throw new Error('Failed to convert notification image to RGBA');
 		const context = global.stage.context.get_backend().get_cogl_context();
-		const pixels = pixbuf.get_pixels();
+		const pixels = iconPixbuf.get_pixels();
 		const content = new St.ImageContent({
-			preferred_width: pixbuf.width,
-			preferred_height: pixbuf.height,
+			preferred_width: iconPixbuf.width,
+			preferred_height: iconPixbuf.height,
 		});
-		content.set_bytes(context, pixels, Cogl.PixelFormat.RGBA_8888, pixbuf.width, pixbuf.height, pixbuf.rowstride);
+		content.set_bytes(
+			context,
+			pixels,
+			Cogl.PixelFormat.RGBA_8888,
+			iconPixbuf.width,
+			iconPixbuf.height,
+			iconPixbuf.rowstride,
+		);
 		return content;
 	}
 

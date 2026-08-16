@@ -7,7 +7,7 @@ import type CopyousExtension from '../../../extension.js';
 import { registerClass } from '../../common/gjs.js';
 import { Icon } from '../../common/icons.js';
 import { ImageItemSettings } from '../../common/settings.js';
-import { ClipboardEntry } from '../../database/database.js';
+import { ClipboardEntry, ImageMetadata } from '../../database/database.js';
 import { ContentInfo, createFileInfo } from '../components/contentInfo.js';
 import { FileType, ImagePreview } from '../components/contentPreview.js';
 import { ClipboardItem } from './clipboardItem.js';
@@ -33,7 +33,7 @@ export class ImageItem extends ClipboardItem {
 
 	private readonly _cancellable: Gio.Cancellable = new Gio.Cancellable();
 
-	constructor(ext: CopyousExtension, entry: ClipboardEntry) {
+	constructor(ext: CopyousExtension, entry: ClipboardEntry, loadPreview: boolean = true) {
 		super(ext, entry, Icon.Image, _('Image'));
 
 		this.imageItemSettings = this.ext.settings.get_child('image-item');
@@ -42,7 +42,16 @@ export class ImageItem extends ClipboardItem {
 		this.add_style_class_name('no-image-info');
 
 		const file = Gio.File.new_for_uri(entry.content);
-		this._imagePreview = new ImagePreview(ext, file);
+		const metadata = entry.metadata as Partial<ImageMetadata> | null;
+		const dimensions =
+			metadata &&
+			typeof metadata.width === 'number' &&
+			metadata.width > 0 &&
+			typeof metadata.height === 'number' &&
+			metadata.height > 0
+				? { width: metadata.width, height: metadata.height }
+				: null;
+		this._imagePreview = new ImagePreview(ext, file, dimensions, loadPreview);
 		this._content.add_child(this._imagePreview);
 
 		// Bind properties
@@ -76,6 +85,11 @@ export class ImageItem extends ClipboardItem {
 		return [];
 	}
 
+	public override loadPreview(): void {
+		this._imagePreview.load();
+		this._imagePreview.active = this.active;
+	}
+
 	private updateSettings() {
 		this.showImageInfo = this.imageItemSettings.get_boolean('show-image-info');
 		this._imagePreview.backgroundSize = this.imageItemSettings.get_enum('background-size');
@@ -83,7 +97,22 @@ export class ImageItem extends ClipboardItem {
 
 	private configureImageInfo() {
 		if (this._imageInfo === undefined && this.showImageInfo) {
-			createFileInfo(this.ext, Gio.File.new_for_uri(this.entry.content), FileType.Image, this._cancellable)
+			const metadata = this.entry.metadata as Partial<ImageMetadata> | null;
+			const dimensions =
+				metadata &&
+				typeof metadata.width === 'number' &&
+				metadata.width > 0 &&
+				typeof metadata.height === 'number' &&
+				metadata.height > 0
+					? { width: metadata.width, height: metadata.height }
+					: null;
+			createFileInfo(
+				this.ext,
+				Gio.File.new_for_uri(this.entry.content),
+				FileType.Image,
+				this._cancellable,
+				dimensions,
+			)
 				.then((imageInfo) => {
 					this._imageInfo = imageInfo;
 					this._content.add_child(this._imageInfo);

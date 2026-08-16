@@ -25,6 +25,11 @@ export const FileType = {
 
 export type FileType = (typeof FileType)[keyof typeof FileType];
 
+export interface ImageDimensions {
+	width: number;
+	height: number;
+}
+
 @registerClass()
 export class ContentPreview extends St.BoxLayout {
 	constructor() {
@@ -34,6 +39,65 @@ export class ContentPreview extends St.BoxLayout {
 			x_expand: true,
 			y_expand: true,
 		});
+	}
+}
+
+const IMAGE_PREVIEW_SIZE = 512;
+
+@registerClass()
+class AsyncImageBox extends St.Widget {
+	private _backgroundSize: BackgroundSize = BackgroundSize.Cover;
+	private readonly _texture: Clutter.Actor;
+
+	constructor(
+		image: Gio.File,
+		private readonly _ratio: number,
+	) {
+		super({
+			style_class: 'image-box',
+			x_align: Clutter.ActorAlign.FILL,
+			y_align: Clutter.ActorAlign.FILL,
+			x_expand: true,
+			y_expand: true,
+			clip_to_allocation: true,
+		});
+
+		const paintScale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+		this._texture = St.TextureCache.get_default().load_file_async(
+			image,
+			IMAGE_PREVIEW_SIZE,
+			IMAGE_PREVIEW_SIZE,
+			paintScale,
+			this.get_resource_scale(),
+		);
+		this.add_child(this._texture);
+	}
+
+	set backgroundSize(backgroundSize: BackgroundSize) {
+		if (this._backgroundSize === backgroundSize) return;
+		this._backgroundSize = backgroundSize;
+		this.queue_relayout();
+	}
+
+	override vfunc_allocate(box: Clutter.ActorBox): void {
+		this.set_allocation(box);
+
+		const width = box.get_width();
+		const height = box.get_height();
+		if (width <= 0 || height <= 0) return;
+
+		const widthScale = width;
+		const heightScale = height / this._ratio;
+		const scale =
+			this._backgroundSize === BackgroundSize.Cover
+				? Math.max(widthScale, heightScale)
+				: Math.min(widthScale, heightScale);
+		const imageWidth = scale;
+		const imageHeight = scale * this._ratio;
+		const x = Math.floor((width - imageWidth) / 2);
+		const y = Math.floor((height - imageHeight) / 2);
+
+		this._texture.allocate(Clutter.ActorBox.new(x, y, x + imageWidth, y + imageHeight));
 	}
 }
 
@@ -51,30 +115,25 @@ export class ContentPreview extends St.BoxLayout {
 export class ImagePreview extends ContentPreview {
 	private _backgroundSize: BackgroundSize = BackgroundSize.Cover;
 	private readonly _ratio: number | null;
-	private readonly _effect?: Clutter.BrightnessContrastEffect;
+	private readonly _image: Gio.File;
+	private _imageBox?: AsyncImageBox;
+	private _effect?: Clutter.BrightnessContrastEffect;
 
-	constructor(ext: Extension, image: Gio.File) {
+	constructor(ext: Extension, image: Gio.File, dimensions?: ImageDimensions | null, load: boolean = true) {
 		super();
 
+		this._image = image;
 		this.add_style_class_name('image-preview');
 
 		if (image.query_exists(null)) {
 			try {
-				const [, width, height] = GdkPixbuf.Pixbuf.get_file_info(image.get_path()!);
+				let width = dimensions?.width ?? 0;
+				let height = dimensions?.height ?? 0;
+				if (width <= 0 || height <= 0) {
+					[, width, height] = GdkPixbuf.Pixbuf.get_file_info(image.get_path()!);
+				}
 				this._ratio = height / width;
-
-				const imageBox = new St.Widget({
-					style_class: 'image-box',
-					x_align: Clutter.ActorAlign.FILL,
-					y_align: Clutter.ActorAlign.FILL,
-					x_expand: true,
-					y_expand: true,
-					style: `background-image: url("${image.get_uri()}");`,
-				});
-				this.add_child(imageBox);
-
-				this._effect = new Clutter.BrightnessContrastEffect();
-				imageBox.add_effect(this._effect);
+				if (load) this.load();
 				return;
 			} catch {
 				// Ignore
@@ -95,6 +154,17 @@ export class ImagePreview extends ContentPreview {
 		);
 	}
 
+	public load(): void {
+		if (this._ratio === null || this._imageBox) return;
+
+		this._imageBox = new AsyncImageBox(this._image, this._ratio);
+		this._imageBox.backgroundSize = this._backgroundSize;
+		this.add_child(this._imageBox);
+
+		this._effect = new Clutter.BrightnessContrastEffect();
+		this._imageBox.add_effect(this._effect);
+	}
+
 	get backgroundSize() {
 		return this._backgroundSize;
 	}
@@ -108,6 +178,7 @@ export class ImagePreview extends ContentPreview {
 		} else {
 			this.add_style_class_name('contain');
 		}
+		if (this._imageBox) this._imageBox.backgroundSize = backgroundSize;
 	}
 
 	set active(active: ActiveState) {

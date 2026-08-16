@@ -8,7 +8,7 @@ import { ClipboardHistory } from '../common/settings.js';
 /**
  * Metadata.
  */
-export type Metadata = CodeMetadata | FileMetadata | LinkMetadata;
+export type Metadata = CodeMetadata | FileMetadata | ImageMetadata | LinkMetadata;
 
 /**
  * Programming language.
@@ -40,6 +40,14 @@ export type FileOperation = (typeof FileOperation)[keyof typeof FileOperation];
  */
 export interface FileMetadata {
 	operation: FileOperation;
+}
+
+/**
+ * Image dimensions.
+ */
+export interface ImageMetadata {
+	width: number;
+	height: number;
 }
 
 /**
